@@ -1,0 +1,94 @@
+name: Manual Deploy React App to Docker
+
+on:
+  workflow_dispatch:
+    inputs:
+      server:
+        description: "Choisir le serveur de déploiement"
+        required: true
+        default: "prod"
+        type: choice
+        options:
+          - prod
+      container:
+        description: "Nom du service Docker à redémarrer"
+        required: true
+        type: choice
+        options:
+          - backoffice
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install WireGuard
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wireguard-tools
+
+      - name: Configure and Connect to WireGuard VPN
+        run: |
+          echo "${{ secrets.WG_CONF }}" | sudo tee /etc/wireguard/wg0.conf > /dev/null
+          sudo chmod 600 /etc/wireguard/wg0.conf
+          sudo wg-quick up wg0
+        shell: bash
+
+      - name: Define server variables
+        run: |
+          echo "SSH_HOST=${{ secrets.HOST_DLYHUB }}" >> $GITHUB_ENV
+          echo "SSH_USER=${{ secrets.USER_DLYHUB }}" >> $GITHUB_ENV
+          echo "SSH_PORT=${{ secrets.PORT_DLYHUB }}" >> $GITHUB_ENV
+          echo "SSH_PASS=${{ secrets.PASS_DLYHUB }}" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Deploy to selected server via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
+          password: ${{ env.SSH_PASS }}
+          port: ${{ env.SSH_PORT }}
+          script: |
+            set -e  # Arrête le script en cas d'erreur
+
+            if [ ! -d ~/projects ]; then
+              echo "Le dossier ~/projects n'existe pas !" >&2
+              exit 1
+            fi
+
+            cd ~/projects
+             if [ ! -d backoffice ]; then
+                echo "projet cloné"
+                git clone https://github.com/Skuskusku13/backoffice.git backoffice
+            else
+                cd backoffice
+                git pull origin main
+            fi
+
+            if [ ! -d ~/my-docker ]; then
+              echo "Le dossier ~/my-docker n'existe pas !" >&2
+              exit 1
+            fi
+
+            cd ~/my-docker
+
+            echo "Rebuild de l’image: ${{ inputs.container }}"
+            docker compose build ${{ inputs.container }} --no-cache
+            echo $?
+
+            echo "Relance du conteneur: ${{ inputs.container }}"
+            docker compose up -d --force-recreate ${{ inputs.container }}
+            echo $?
+
+      - name: Disconnect from WireGuard VPN
+        if: always()
+        run: |
+          sudo wg-quick down wg0
+        shell: bash
