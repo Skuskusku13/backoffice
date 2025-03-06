@@ -27,4 +27,4 @@ RUN echo "Include /usr/local/apache2/conf/extra/000-default.conf" >> /usr/local/
 # S'assurer que le module rewrite est activé
 RUN sed -i '/LoadModule rewrite_module/s/^#//g' /usr/local/apache2/conf/httpd.conf
 
-COPY --from=builder /app/build /usr/local/apache2/htdocs/
+COPY --from=build /app/dist/backoffice/browser/ /usr/local/apache2/htdocs/
