@@ -1,0 +1,20 @@
+networks:
+  reverse-proxy:
+    external: true
+
+
+services:
+  backoffice:
+    container_name: backoffice
+    build:
+      context: ../
+      dockerfile: ./docker-config/Dockerfile
+    image: backoffice:latest
+    environment:
+      - VIRTUAL_HOST=backoffice.local
+      - VIRTUAL_PORT=80
+#    volumes:
+#      -
+    networks:
+      reverse-proxy:
+        ipv4_address: 172.13.0.5
