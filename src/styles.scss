@@ -15,7 +15,19 @@ body {
   @include mat.toolbar-overrides(
     (
       container-background-color: var(--mat-sys-primary-container),
-      container-text-color: var(--mat-sys-on-surface),
+      container-text-color: var(--mat-sys-on-primary-container),
+    )
+  );
+  @include mat.icon-overrides(
+    (
+      color: var(--mat-sys-on-primary-container),
     )
   );
 }
+
+// app-header {
+//   @include mat.button-overrides((
+//     filled-container-color: orange,
+//     filled-label-text-color: red,
+//   ));
+// }

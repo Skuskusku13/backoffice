@@ -1,14 +1,11 @@
-<mat-toolbar container-background-color="--mat-sys-surface">
-  <button
-    mat-icon-button
-    class="example-icon"
-    aria-label="Example icon-button with menu icon"
-  >
-    <mat-icon>menu</mat-icon>
+<mat-toolbar>
+  @for (item of navBarItems; track $index) {
+  <button mat-button routerLink="{{ item.segment }}" routerLinkActive="active">
+    {{ item.name }}
   </button>
-  <span>BackOffice TIG</span>
+  }
   <span class="example-spacer"></span>
-  <button
+  <!-- <button
     mat-icon-button
     class="example-icon favorite-icon"
     aria-label="Example icon-button with heart icon"
@@ -21,5 +18,5 @@
     aria-label="Example icon-button with share icon"
   >
     <mat-icon>share</mat-icon>
-  </button>
+  </button> -->
 </mat-toolbar>
