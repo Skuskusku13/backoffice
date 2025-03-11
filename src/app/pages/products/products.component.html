@@ -1,1 +1,7 @@
-<p>products works!</p>
+<h1>Products dashboard</h1>
+
+<mat-tab-group animationDuration="0ms">
+  @for (category of categories; track $index) {
+  <mat-tab label="{{ category.name }}">Content 1</mat-tab>
+  }
+</mat-tab-group>
