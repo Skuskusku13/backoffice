@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ProductsTableComponent } from '../../shared/products-table/products-table.component';
+import { ProductsService } from '../../core/services/products.service';
 
 /**
  * @title Products page component
  */
 @Component({
   selector: 'app-products',
-  imports: [MatTabsModule],
+  imports: [MatTabsModule, ProductsTableComponent],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
@@ -16,4 +18,5 @@ export class ProductsComponent {
     { id: 1, name: 'Crustacés' },
     { id: 2, name: 'Fruits de mer' },
   ];
+  private productsService: ProductsService = inject(ProductsService);
 }

@@ -2,6 +2,8 @@
 
 <mat-tab-group animationDuration="0ms">
   @for (category of categories; track $index) {
-  <mat-tab label="{{ category.name }}">Content 1</mat-tab>
+  <mat-tab label="{{ category.name }}"
+    ><app-products-table></app-products-table
+  ></mat-tab>
   }
 </mat-tab-group>
