@@ -42,7 +42,6 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['products'] && this.products) {
       this.dataSource.data = this.products;
-      console.log(this.products);
     }
   }
 
