@@ -30,14 +30,13 @@ const initialState: ProductsState = {
 export const ProductsStore = signalStore(
   withState(initialState),
   withComputed(({ products, category }) => ({
-    productsCount: computed(() => products().length),
+    productsCount: computed(() => {
+      return products().length;
+    }),
     sortedProducts: computed(() => {
-      console.log(products(), category())
-      const productList = products();
-      const selectedCategory = category();
-          return Array.isArray(productList)
-        ? productList.filter((product) => product.category === selectedCategory)
-        : [];
+      return products().filter((product) => {
+        return product.category == category();
+      });
     }),
   })),
   withMethods((store, productsService = inject(ProductsService)) => ({
@@ -54,8 +53,10 @@ export const ProductsStore = signalStore(
         switchMap(() => {
           return productsService.getProducts().pipe(
             tapResponse({
-              next: (products) =>
-                patchState(store, { products, isLoading: false }),
+              next: (products) => {
+                console.log('retrivedProducts', products);
+                patchState(store, { products, isLoading: false });
+              },
               error: (err) => {
                 patchState(store, { isLoading: false });
                 console.error(err);

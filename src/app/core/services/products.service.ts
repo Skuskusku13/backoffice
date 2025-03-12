@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subscription } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { API_URL } from '../utils/constants.utils';
 
 /**
@@ -20,7 +20,8 @@ export class ProductsService {
   constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(API_URL + 'products');
+    return this.http.get<{products: Product[]}>(API_URL + 'products').pipe(
+      map((response) => response.products ?? []));
   }
 
   getProduct(tig_id: number): Observable<Product> {
