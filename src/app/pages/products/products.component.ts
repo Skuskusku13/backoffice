@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProductsTableComponent } from '../../shared/products-table/products-table.component';
 import { ProductsStore } from '../../core/state/products.store';
 
@@ -8,7 +9,7 @@ import { ProductsStore } from '../../core/state/products.store';
  */
 @Component({
   selector: 'app-products',
-  imports: [MatTabsModule, ProductsTableComponent],
+  imports: [MatTabsModule, MatProgressSpinnerModule, ProductsTableComponent],
   providers: [ProductsStore],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
