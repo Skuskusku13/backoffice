@@ -1,1 +1,42 @@
-<p>Products : {{products | json}}</p>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Prix</th>
+      <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+    </ng-container>
+    <ng-container matColumnDef="discount_price">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Prix en promotion</th>
+      <td mat-cell *matCellDef="let element">//</td>
+    </ng-container>
+    <ng-container matColumnDef="discount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Promotion</th>
+      <td mat-cell *matCellDef="let element">{{ element.discount }}%</td>
+    </ng-container>
+    <ng-container matColumnDef="quantityInStock">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Stocks</th>
+      <td mat-cell *matCellDef="let element">//</td>
+    </ng-container>
+    <ng-container matColumnDef="number_sold">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ventes</th>
+      <td mat-cell *matCellDef="let element">//</td>
+    </ng-container>
+    <ng-container matColumnDef="comments">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Commentaires</th>
+      <td mat-cell *matCellDef="let element">{{ element.comments }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Select page of products"
+  >
+  </mat-paginator>
+</div>

@@ -54,7 +54,6 @@ export const ProductsStore = signalStore(
           return productsService.getProducts().pipe(
             tapResponse({
               next: (products) => {
-                console.log('retrivedProducts', products);
                 patchState(store, { products, isLoading: false });
               },
               error: (err) => {
