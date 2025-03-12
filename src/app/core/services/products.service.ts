@@ -4,6 +4,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 import { API_URL } from '../utils/constants.utils';
 
+/**
+ * @title Products service to get all products from backend
+ */
 @Injectable({
   providedIn: 'root',
 })

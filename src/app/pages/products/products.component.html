@@ -1,9 +1,13 @@
-<h1>Products dashboard</h1>
+<h2>Products dashboard</h2>
 
 <mat-tab-group animationDuration="0ms">
   @for (category of categories; track $index) {
   <mat-tab label="{{ category.name }}"
-    ><app-products-table></app-products-table
-  ></mat-tab>
+    ><app-products-table
+      [products]="store.sortedProducts()"
+    ></app-products-table>
+    <p>{{ store.isLoading() }}</p>
+    <p>{{ store.productsCount() }}</p>
+  </mat-tab>
   }
 </mat-tab-group>

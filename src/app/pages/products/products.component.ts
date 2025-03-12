@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProductsTableComponent } from '../../shared/products-table/products-table.component';
-import { ProductsService } from '../../core/services/products.service';
+import { ProductsStore } from '../../core/state/products.store';
 
 /**
  * @title Products page component
@@ -9,14 +9,19 @@ import { ProductsService } from '../../core/services/products.service';
 @Component({
   selector: 'app-products',
   imports: [MatTabsModule, ProductsTableComponent],
+  providers: [ProductsStore],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit {
   categories = [
     { id: 0, name: 'Poissons' },
-    { id: 1, name: 'Crustacés' },
-    { id: 2, name: 'Fruits de mer' },
+    { id: 1, name: 'Fruits de mer' },
+    { id: 2, name: 'Crustacés' },
   ];
-  private productsService: ProductsService = inject(ProductsService);
+  readonly store = inject(ProductsStore);
+
+  ngOnInit(): void {
+    this.store.load();
+  }
 }
