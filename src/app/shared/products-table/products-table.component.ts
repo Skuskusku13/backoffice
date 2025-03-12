@@ -10,13 +10,14 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Product } from '../../core/models/product.interface';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { CurrencyPipe } from '@angular/common';
 
 /**
  * @title Products table with pagination
  */
 @Component({
   selector: 'app-products-table',
-  imports: [MatTableModule, MatPaginatorModule, MatSortModule],
+  imports: [MatTableModule, MatPaginatorModule, MatSortModule, CurrencyPipe],
   templateUrl: './products-table.component.html',
   styleUrl: './products-table.component.scss',
 })
@@ -41,6 +42,7 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['products'] && this.products) {
       this.dataSource.data = this.products;
+      console.log(this.products);
     }
   }
 

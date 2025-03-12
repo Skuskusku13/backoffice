@@ -6,23 +6,36 @@
     </ng-container>
     <ng-container matColumnDef="price">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Prix</th>
-      <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+      <td mat-cell *matCellDef="let element">
+        {{ element.price | currency : "EUR" }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="discount_price">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Prix en promotion</th>
-      <td mat-cell *matCellDef="let element">//</td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        Prix en promotion
+      </th>
+      <td mat-cell *matCellDef="let element">
+        @if (element.sale) {
+        {{
+          element.price - (element.price * element.discount) / 100
+            | currency : "EUR"
+        }}
+        }
+      </td>
     </ng-container>
     <ng-container matColumnDef="discount">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Promotion</th>
-      <td mat-cell *matCellDef="let element">{{ element.discount }}%</td>
+      <td mat-cell *matCellDef="let element">
+        @if (element.sale) { -{{ element.discount }}% }
+      </td>
     </ng-container>
     <ng-container matColumnDef="quantityInStock">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Stocks</th>
-      <td mat-cell *matCellDef="let element">//</td>
+      <td mat-cell *matCellDef="let element">0</td>
     </ng-container>
     <ng-container matColumnDef="number_sold">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Ventes</th>
-      <td mat-cell *matCellDef="let element">//</td>
+      <td mat-cell *matCellDef="let element">0</td>
     </ng-container>
     <ng-container matColumnDef="comments">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Commentaires</th>
@@ -34,7 +47,7 @@
   </table>
 
   <mat-paginator
-    [pageSizeOptions]="[5, 10, 20]"
+    [pageSizeOptions]="[10, 20, 50]"
     showFirstLastButtons
     aria-label="Select page of products"
   >
