@@ -11,13 +11,22 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Product } from '../../core/models/product.interface';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { CurrencyPipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 /**
  * @title Products table with pagination
  */
 @Component({
   selector: 'app-products-table',
-  imports: [MatTableModule, MatPaginatorModule, MatSortModule, CurrencyPipe],
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    CurrencyPipe,
+    MatIconModule,
+    MatButtonModule,
+  ],
   templateUrl: './products-table.component.html',
   styleUrl: './products-table.component.scss',
 })
@@ -32,6 +41,7 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
     'quantityInStock',
     'number_sold',
     'comments',
+    'send',
   ];
 
   @ViewChild(MatPaginator)
@@ -48,5 +58,9 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  sendRowUpdates(row: Product) {
+    console.log('rowid:', row.tig_id);
   }
 }

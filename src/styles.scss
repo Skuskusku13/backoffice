@@ -24,7 +24,7 @@ h1, h2 {
   );
   @include mat.icon-overrides(
     (
-      color: var(--mat-sys-on-primary-container),
+      // color: var(--mat-sys-on-primary-container),
     )
   );
 }
