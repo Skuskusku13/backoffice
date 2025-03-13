@@ -42,8 +42,12 @@
     <ng-container matColumnDef="send" stickyEnd>
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Appliquer</th>
       <td mat-cell *matCellDef="let element">
-        <button mat-mini-fab disabled="true" aria-label="Send icon button with a send icon">
-            <mat-icon>send</mat-icon>
+        <button
+          mat-mini-fab
+          disabled="true"
+          aria-label="Send icon button with a send icon"
+        >
+          <mat-icon>send</mat-icon>
         </button>
       </td>
     </ng-container>
@@ -62,4 +66,13 @@
     aria-label="Select page of products"
   >
   </mat-paginator>
+
+  @if (true) {
+  <div class="send-all-button-container">
+    <button mat-fab disabled="true" extended>
+      <mat-icon>send</mat-icon>
+      Appliquer pour tous
+    </button>
+  </div>
+  }
 </div>
