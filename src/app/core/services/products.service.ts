@@ -3,6 +3,7 @@ import { Product } from '../models/product.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable, Subscription } from 'rxjs';
 import { API_URL } from '../utils/constants.utils';
+import { ProductUpdateData } from '../models/product-update-dto.interface';
 
 /**
  * @title Products service to get all products from backend
@@ -20,37 +21,44 @@ export class ProductsService {
   constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<{products: Product[]}>(API_URL + 'products').pipe(
-      map((response) => response.products ?? []));
+    return this.http
+      .get<{ products: Product[] }>(API_URL + 'products')
+      .pipe(map((response) => response.products ?? []));
   }
 
   getProduct(tig_id: number): Observable<Product> {
     return this.http.get<Product>(API_URL + 'products/' + tig_id);
   }
 
-  updateProducts(): Subscription {
-    return this.http
-      .put(API_URL + 'products/update', {}, this.httpOptions)
-      .subscribe({
-        next: () => {
-          alert('Produits modifiés avec succès !');
-        },
-        error: (error) => {
-          alert('Erreur lors de la modification des produits !' + error);
-        },
-      });
+  updateProducts(updatedProducts: ProductUpdateData[]): Observable<Product[]> {
+    return this.http.put<Product[]>(
+      API_URL + 'products/update',
+      updatedProducts,
+      this.httpOptions
+    );
+    // .subscribe({
+    //   next: () => {
+    //     alert('Produits modifiés avec succès !');
+    //   },
+    //   error: (error) => {
+    //     alert('Erreur lors de la modification des produits !' + error);
+    //   },
+    // });
   }
 
-  updateProduct(tig_id: number): Subscription {
-    return this.http
-      .put(API_URL + `products/${tig_id}/update`, {}, this.httpOptions)
-      .subscribe({
-        next: () => {
-          alert('Produit modifié avec succès !');
-        },
-        error: (error) => {
-          alert('Erreur lors de la modification du produit !' + error);
-        },
-      });
+  updateProduct(updatedProduct: ProductUpdateData): Observable<Product> {
+    return this.http.put<Product>(
+      API_URL + `products/${updatedProduct.tig_id}/update`,
+      updatedProduct,
+      this.httpOptions
+    );
+    // .subscribe({
+    //   next: () => {
+    //     alert('Produit modifié avec succès !');
+    //   },
+    //   error: (error) => {
+    //     alert('Erreur lors de la modification du produit !' + error);
+    //   },
+    // });
   }
 }

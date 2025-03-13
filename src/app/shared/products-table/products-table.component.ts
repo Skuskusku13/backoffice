@@ -21,6 +21,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { ProductUpdateData } from '../../core/models/product-update-dto.interface';
 
 /**
  * @title Products table with pagination
@@ -80,8 +81,10 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
       productsArray: this.fb.array(
         this.products.map((product) =>
           this.fb.group({
+            tig_id: [product.tig_id],
             discount: [product.discount],
-            stock: [product.quantityInStock],
+            quantityInStock: [product.quantityInStock],
+            purchasePrice: [0],
           })
         )
       ),
@@ -92,8 +95,9 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
     return this.form.get('productsArray') as FormArray;
   }
 
-  sendRowUpdates(row: Product) {
-    console.log('rowid:', row.tig_id);
+  // s'active au clic sur une ligne
+  sendRowUpdates(row: Product): void {
+    // console.log('clickOnProduct:', row);
   }
 
   isModified(index: number): boolean {
@@ -108,13 +112,16 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
     return modifiedRows.length >= 2;
   }
 
-  onSubmit(index: number) {
-    const updatedProduct = this.productsArray.at(index).value;
-    console.log('Produit mis à jour :', updatedProduct);
+  onSubmit(index: number): void {
+    const productUpdateData: ProductUpdateData =
+      this.productsArray.at(index).value;
+    productUpdateData.sale = productUpdateData.discount != 0;
+    console.log('productUpdateData:', productUpdateData);
     // service
   }
 
-  onSubmitAllUpdates() {
+  onSubmitAllUpdates(): void {
     console.log('Toutes les mises à jour :', this.productsArray.value);
+    // service
   }
 }

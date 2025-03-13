@@ -10,6 +10,19 @@ mat-form-field {
   width: 100px;
 }
 
+.updateStock {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+// .mat-mdc-row:hover .mat-mdc-cell {
+//   background-color: rgba(25, 118, 210, 0.1);
+// }
+
+.mat-mdc-form-field{
+    margin: 1em 1em 0 0;
+}
+
 .table-container {
   overflow: auto;
   height: 100vh;

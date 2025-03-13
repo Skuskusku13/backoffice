@@ -8,7 +8,7 @@
     >
       <ng-container matColumnDef="name" sticky>
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.name }} ({{element.unit}})</td>
       </ng-container>
       <ng-container matColumnDef="price">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Prix</th>
@@ -24,18 +24,20 @@
             element.price - (element.price * element.discount) / 100
               | currency : "EUR"
           }}
-          }
+          }@else { ----------- }
         </td>
       </ng-container>
       <ng-container matColumnDef="discount">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Réduction</th>
         <td mat-cell *matCellDef="let element">
-          @if (element.sale) { -{{ element.discount }}% }
+          @if (element.sale) { -{{ element.discount }}% }@else {------}
         </td>
       </ng-container>
       <ng-container matColumnDef="quantityInStock">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Stocks</th>
-        <td mat-cell *matCellDef="let element">0</td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.quantityInStock }}
+        </td>
       </ng-container>
       <ng-container matColumnDef="number_sold" sticky>
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Ventes</th>
@@ -54,6 +56,7 @@
               matInput
               type="number"
               min="0"
+              max="99"
               class="example-right-align"
               placeholder="0"
               formControlName="discount"
@@ -69,6 +72,7 @@
           mat-cell
           *matCellDef="let element; let i = index"
           [formGroupName]="i"
+          class="updateStock"
         >
           <mat-form-field floatLabel="always">
             <mat-label>Quantité</mat-label>
@@ -77,11 +81,25 @@
               type="number"
               class="example-right-align"
               placeholder="0"
-              formControlName="stock"
+              formControlName="quantityInStock"
             />
             <span matTextPrefix></span>
             <span matTextSuffix></span>
           </mat-form-field>
+          @if (isModified(i)) {
+          <mat-form-field floatLabel="always">
+            <mat-label>Prix</mat-label>
+            <input
+              matInput
+              type="number"
+              class="example-right-align"
+              placeholder="0"
+              formControlName="purchasePrice"
+            />
+            <span matTextPrefix></span>
+            <span matTextSuffix>€</span>
+          </mat-form-field>
+          }
         </td>
       </ng-container>
       <ng-container matColumnDef="comments">
