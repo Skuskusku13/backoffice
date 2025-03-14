@@ -10,7 +10,16 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-h1, h2 {
+// html {
+//   @include mat.theme((
+//     color: mat.$yellow-palette,
+//     typography: Roboto,
+//     density: -2,
+//   ));
+// }
+
+h1,
+h2 {
   color: var(--mat-sys-on-primary-container);
 }
 
@@ -22,16 +31,16 @@ h1, h2 {
       container-text-color: var(--mat-sys-on-primary-container),
     )
   );
-  @include mat.icon-overrides(
+  @include mat.icon-overrides((// color: var(--mat-sys-on-primary-container),
+  ));
+  @include mat.table-overrides(
     (
-      // color: var(--mat-sys-on-primary-container),
+      background-color: var(--mat-sys-surface-container-lowest),
+    )
+  );
+  @include mat.paginator-overrides(
+    (
+      container-background-color: var(--mat-sys-surface-container-lowest),
     )
   );
 }
-
-// app-header {
-//   @include mat.button-overrides((
-//     filled-container-color: orange,
-//     filled-label-text-color: red,
-//   ));
-// }

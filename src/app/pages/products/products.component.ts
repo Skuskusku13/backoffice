@@ -39,7 +39,6 @@ export class ProductsComponent implements OnInit {
         alert('Erreur lors de la modification du produit !' + error);
       },
     });
-    console.log('recup product update:', productUpdateData);
   }
 
   handleProductsUpdate(productsUpdateData: ProductUpdateData[]) {
@@ -52,6 +51,5 @@ export class ProductsComponent implements OnInit {
         alert('Erreur lors de la modification des produits !' + error);
       },
     });
-    console.log('recup products update:', productsUpdateData);
   }
 }
