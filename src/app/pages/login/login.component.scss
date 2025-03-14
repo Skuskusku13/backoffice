@@ -1,0 +1,31 @@
+.login-container {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-card {
+  max-width: 400px;
+  width: 90%;
+  padding: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+mat-card-header {
+  margin-bottom: 20px;
+}
+
+button[type="submit"] {
+  width: 100%;
+}
