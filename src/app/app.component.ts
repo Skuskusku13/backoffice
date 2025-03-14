@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/header/header.component';
-import {AuthGuard} from './pages/login/auth.guard';
+import {AuthGuard} from './core/guards/auth.guard';
 
 @Component({
   selector: 'app-root',

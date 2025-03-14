@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {CanActivate, CanActivateFn, Router} from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
 import { map } from 'rxjs/operators';
-import {LoginService} from '../../core/services/login.service';
+import {LoginService} from '../services/login.service';
 
 export const AuthGuard: () => Observable<boolean> = (): Observable<boolean> => {
   const loginService: LoginService = inject(LoginService)

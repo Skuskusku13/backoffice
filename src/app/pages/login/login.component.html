@@ -8,29 +8,43 @@
       <form [formGroup]="loginForm" (ngSubmit)="login()">
         <mat-form-field appearance="outline">
           <mat-label>Nom d'utilisateur</mat-label>
-          <input matInput formControlName="username" type="text">
-          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
-            Le nom d'utilisateur est requis
-          </mat-error>
+          <input matInput formControlName="username" type="text" />
+          @if (loginForm.get('username')?.hasError('required')) {
+          <mat-error> Le nom d'utilisateur est requis </mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Mot de passe</mat-label>
-          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'">
-          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hidePassword ? 'password' : 'text'"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+            type="button"
+          >
+            <mat-icon>{{
+              hidePassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
           </button>
           @if (loginForm.get('password')?.hasError('required')) {
-            <mat-error>
-              Le mot de passe est requis
-            </mat-error>
+          <mat-error> Le mot de passe est requis </mat-error>
           }
-<!--          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">-->
-<!--            Le mot de passe doit contenir au moins 6 caractères-->
-<!--          </mat-error>-->
+          <!--          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">-->
+          <!--            Le mot de passe doit contenir au moins 6 caractères-->
+          <!--          </mat-error>-->
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!loginForm.valid"
+        >
           Se connecter
         </button>
       </form>
