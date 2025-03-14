@@ -48,7 +48,7 @@ export const ProductsStore = signalStore(
     load: rxMethod<void>(
       pipe(
         debounceTime(300),
-        distinctUntilChanged(),
+        // distinctUntilChanged(),
         tap(() => patchState(store, { isLoading: true })),
         switchMap(() => {
           return productsService.getProducts().pipe(

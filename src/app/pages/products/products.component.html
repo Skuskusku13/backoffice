@@ -13,6 +13,8 @@
     } @else {
     <app-products-table
       [products]="store.sortedProducts()"
+      (productUpdate)="handleProductUpdate($event)"
+      (productsUpdate)="handleProductsUpdate($event)"
     ></app-products-table>
     }
   </mat-tab>

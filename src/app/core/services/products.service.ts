@@ -36,14 +36,6 @@ export class ProductsService {
       updatedProducts,
       this.httpOptions
     );
-    // .subscribe({
-    //   next: () => {
-    //     alert('Produits modifiés avec succès !');
-    //   },
-    //   error: (error) => {
-    //     alert('Erreur lors de la modification des produits !' + error);
-    //   },
-    // });
   }
 
   updateProduct(updatedProduct: ProductUpdateData): Observable<Product> {
@@ -52,13 +44,5 @@ export class ProductsService {
       updatedProduct,
       this.httpOptions
     );
-    // .subscribe({
-    //   next: () => {
-    //     alert('Produit modifié avec succès !');
-    //   },
-    //   error: (error) => {
-    //     alert('Erreur lors de la modification du produit !' + error);
-    //   },
-    // });
   }
 }

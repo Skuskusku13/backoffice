@@ -3,6 +3,7 @@ import {
   Component,
   Input,
   OnChanges,
+  output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -61,6 +62,8 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  public productUpdate = output<ProductUpdateData>();
+  public productsUpdate = output<ProductUpdateData[]>();
 
   constructor(private fb: FormBuilder) {}
 
@@ -83,7 +86,7 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
           this.fb.group({
             tig_id: [product.tig_id],
             discount: [product.discount],
-            quantityInStock: [product.quantityInStock],
+            quantityInStock: [0],
             purchasePrice: [0],
           })
         )
@@ -115,13 +118,28 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
   onSubmit(index: number): void {
     const productUpdateData: ProductUpdateData =
       this.productsArray.at(index).value;
-    productUpdateData.sale = productUpdateData.discount != 0;
-    console.log('productUpdateData:', productUpdateData);
-    // service
+    this.updateProductData(productUpdateData);
+    // console.log('productUpdateData:', productUpdateData);
+    this.productUpdate.emit(productUpdateData);
   }
 
   onSubmitAllUpdates(): void {
-    console.log('Toutes les mises à jour :', this.productsArray.value);
-    // service
+    const productsUpdateData: ProductUpdateData[] = this.productsArray.value;
+    for (const productUpdateData of productsUpdateData) {
+      this.updateProductData(productUpdateData);
+    }
+    // console.log('Toutes les mises à jour :', productsUpdateData);
+    this.productsUpdate.emit(productsUpdateData);
+  }
+
+  updateProductData(productUpdateData: ProductUpdateData): ProductUpdateData {
+    const product = this.products.find(
+      (product) => product.tig_id === productUpdateData.tig_id
+    );
+    if (product) {
+      productUpdateData.quantityInStock += product.quantityInStock;
+    }
+    productUpdateData.sale = productUpdateData.discount !== 0;
+    return productUpdateData;
   }
 }

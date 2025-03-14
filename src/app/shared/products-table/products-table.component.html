@@ -8,7 +8,9 @@
     >
       <ng-container matColumnDef="name" sticky>
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
-        <td mat-cell *matCellDef="let element">{{ element.name }} ({{element.unit}})</td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.name }} ({{ element.unit }})
+        </td>
       </ng-container>
       <ng-container matColumnDef="price">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Prix</th>
@@ -30,7 +32,7 @@
       <ng-container matColumnDef="discount">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Réduction</th>
         <td mat-cell *matCellDef="let element">
-          @if (element.sale) { -{{ element.discount }}% }@else {------}
+          @if (element.sale) { {{ element.discount }}% }@else {------}
         </td>
       </ng-container>
       <ng-container matColumnDef="quantityInStock">
@@ -44,7 +46,7 @@
         <td mat-cell *matCellDef="let element">0</td>
       </ng-container>
       <ng-container matColumnDef="updateDiscount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>MàJ promotion</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>MàJ réduction</th>
         <td
           mat-cell
           *matCellDef="let element; let i = index"
