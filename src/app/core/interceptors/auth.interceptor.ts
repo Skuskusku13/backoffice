@@ -23,10 +23,11 @@ export const authInterceptor: HttpInterceptorFn = (
     catchError((error) => {
       if (error.status === 401 && accessToken) {
         return loginService.refreshAccessToken().pipe(
-          switchMap(() => {
-            const newAccessToken = localStorage.getItem('access');
+          switchMap((response) => {
+            console.log('new accesstoken from resfresh:', response.access);
+            localStorage.setItem('access', response.access);
             const retriedRequest = request.clone({
-              setHeaders: { Authorization: `Bearer ${newAccessToken}` },
+              setHeaders: { Authorization: `Bearer ${response.access}` },
             });
             return next(retriedRequest);
           }),

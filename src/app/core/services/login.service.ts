@@ -41,8 +41,8 @@ export class LoginService {
 
   refreshAccessToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refresh');
-    return this.http.post<any>(`${API_URL}/api/token/refresh/`, {
-      refreshToken,
+    return this.http.post<any>(`${API_URL}api/token/refresh/`, {
+      refresh: refreshToken,
     });
   }
 
