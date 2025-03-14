@@ -1,64 +1,135 @@
 <div class="mat-elevation-z8 table-container" tabindex="0">
-  <table mat-table [dataSource]="dataSource" matSort>
-    <ng-container matColumnDef="name" sticky>
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
-      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-    </ng-container>
-    <ng-container matColumnDef="price">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Prix</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.price | currency : "EUR" }}
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="discount_price">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Promotion</th>
-      <td mat-cell *matCellDef="let element">
-        @if (element.sale) {
-        {{
-          element.price - (element.price * element.discount) / 100
-            | currency : "EUR"
-        }}
-        }
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="discount">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Réduction</th>
-      <td mat-cell *matCellDef="let element">
-        @if (element.sale) { -{{ element.discount }}% }
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="quantityInStock">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Stocks</th>
-      <td mat-cell *matCellDef="let element">0</td>
-    </ng-container>
-    <ng-container matColumnDef="number_sold" sticky>
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ventes</th>
-      <td mat-cell *matCellDef="let element">0</td>
-    </ng-container>
-    <ng-container matColumnDef="comments">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Commentaires</th>
-      <td mat-cell *matCellDef="let element">{{ element.comments }}</td>
-    </ng-container>
-    <ng-container matColumnDef="send" stickyEnd>
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Appliquer</th>
-      <td mat-cell *matCellDef="let element">
-        <button
-          mat-mini-fab
-          disabled="true"
-          aria-label="Send icon button with a send icon"
+  <form [formGroup]="form">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      formArrayName="productsArray"
+    >
+      <ng-container matColumnDef="name" sticky>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.name }} ({{ element.unit }})
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Prix</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.price | currency : "EUR" }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="discount_price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Promotion</th>
+        <td mat-cell *matCellDef="let element">
+          @if (element.sale) {
+          {{
+            element.price - (element.price * element.discount) / 100
+              | currency : "EUR"
+          }}
+          }@else { ----------- }
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Réduction</th>
+        <td mat-cell *matCellDef="let element">
+          @if (element.sale) { {{ element.discount }}% }@else {------}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="quantityInStock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stocks</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.quantityInStock }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="number_sold" sticky>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ventes</th>
+        <td mat-cell *matCellDef="let element">0</td>
+      </ng-container>
+      <ng-container matColumnDef="updateDiscount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Réduction</th>
+        <td
+          mat-cell
+          *matCellDef="let element; let i = index"
+          [formGroupName]="i"
         >
-          <mat-icon>send</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+          <mat-form-field floatLabel="always">
+            <mat-label>Pourcentage</mat-label>
+            <input
+              matInput
+              type="number"
+              min="0"
+              max="99"
+              class="example-right-align"
+              placeholder="0"
+              formControlName="discount"
+            />
+            <span matTextPrefix></span>
+            <span matTextSuffix>%</span>
+          </mat-form-field>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="updateStock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>MàJ stocks</th>
+        <td
+          mat-cell
+          *matCellDef="let element; let i = index"
+          [formGroupName]="i"
+          class="updateStock"
+        >
+          <mat-form-field floatLabel="always">
+            <mat-label>Quantité</mat-label>
+            <input
+              matInput
+              type="number"
+              class="example-right-align"
+              placeholder="0"
+              formControlName="quantityInStock"
+            />
+            <span matTextPrefix></span>
+            <span matTextSuffix></span>
+          </mat-form-field>
+          @if (isModified(i)) {
+          <mat-form-field floatLabel="always">
+            <mat-label>Prix</mat-label>
+            <input
+              matInput
+              type="number"
+              class="example-right-align"
+              placeholder="0"
+              formControlName="purchasePrice"
+            />
+            <span matTextPrefix></span>
+            <span matTextSuffix>€</span>
+          </mat-form-field>
+          }
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="comments">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Commentaires</th>
+        <td mat-cell *matCellDef="let element">{{ element.comments }}</td>
+      </ng-container>
+      <ng-container matColumnDef="send" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Envoyer</th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <button
+            mat-mini-fab
+            [disabled]="!isModified(i)"
+            aria-label="Send icon button with a send icon"
+            (click)="onSubmit(i)"
+          >
+            <mat-icon>send</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr
-      mat-row
-      *matRowDef="let row; columns: displayedColumns"
-      (click)="sendRowUpdates(row)"
-    ></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="sendRowUpdates(row)"
+      ></tr>
+    </table>
+  </form>
 
   <mat-paginator
     [pageSizeOptions]="[10, 20, 50]"
@@ -69,7 +140,12 @@
 
   @if (true) {
   <div class="send-all-button-container">
-    <button mat-fab disabled="true" extended>
+    <button
+      mat-fab
+      extended
+      (click)="onSubmitAllUpdates()"
+      [disabled]="!isAtLeastTwoRowsModified()"
+    >
       <mat-icon>send</mat-icon>
       Appliquer pour tous
     </button>

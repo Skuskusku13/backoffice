@@ -3,6 +3,7 @@ import {
   Component,
   Input,
   OnChanges,
+  output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -13,6 +14,15 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { CurrencyPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ProductUpdateData } from '../../core/models/product-update-dto.interface';
 
 /**
  * @title Products table with pagination
@@ -26,6 +36,9 @@ import { MatButtonModule } from '@angular/material/button';
     CurrencyPipe,
     MatIconModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './products-table.component.html',
   styleUrl: './products-table.component.scss',
@@ -37,21 +50,27 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
     'name',
     'price',
     'discount_price',
-    'discount',
+    // 'discount',
+    'updateDiscount',
     'quantityInStock',
+    'updateStock',
     'number_sold',
     'comments',
     'send',
   ];
-
+  public form!: FormGroup;
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
-
   @ViewChild(MatSort) sort!: MatSort;
+  public productUpdate = output<ProductUpdateData>();
+  public productsUpdate = output<ProductUpdateData[]>();
+
+  constructor(private fb: FormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['products'] && this.products) {
       this.dataSource.data = this.products;
+      this.initForm();
     }
   }
 
@@ -60,7 +79,67 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
     this.dataSource.sort = this.sort;
   }
 
-  sendRowUpdates(row: Product) {
-    console.log('rowid:', row.tig_id);
+  initForm(): void {
+    this.form = this.fb.group({
+      productsArray: this.fb.array(
+        this.products.map((product) =>
+          this.fb.group({
+            tig_id: [product.tig_id],
+            discount: [product.discount],
+            quantityInStock: [0],
+            purchasePrice: [0],
+          })
+        )
+      ),
+    });
+  }
+
+  get productsArray(): FormArray {
+    return this.form.get('productsArray') as FormArray;
+  }
+
+  // s'active au clic sur une ligne
+  sendRowUpdates(row: Product): void {
+    // console.log('clickOnProduct:', row);
+  }
+
+  isModified(index: number): boolean {
+    const productGroup = this.productsArray.at(index) as FormGroup;
+    return productGroup.dirty && productGroup.valid;
+  }
+
+  isAtLeastTwoRowsModified(): boolean {
+    const modifiedRows = this.form.value.productsArray.filter(
+      (product: any) => product.discount !== 0 || product.stock !== 0
+    );
+    return modifiedRows.length >= 2;
+  }
+
+  onSubmit(index: number): void {
+    const productUpdateData: ProductUpdateData =
+      this.productsArray.at(index).value;
+    this.updateProductData(productUpdateData);
+    // console.log('productUpdateData:', productUpdateData);
+    this.productUpdate.emit(productUpdateData);
+  }
+
+  onSubmitAllUpdates(): void {
+    const productsUpdateData: ProductUpdateData[] = this.productsArray.value;
+    for (const productUpdateData of productsUpdateData) {
+      this.updateProductData(productUpdateData);
+    }
+    // console.log('Toutes les mises à jour :', productsUpdateData);
+    this.productsUpdate.emit(productsUpdateData);
+  }
+
+  updateProductData(productUpdateData: ProductUpdateData): ProductUpdateData {
+    const product = this.products.find(
+      (product) => product.tig_id === productUpdateData.tig_id
+    );
+    if (product) {
+      productUpdateData.quantityInStock += product.quantityInStock;
+    }
+    productUpdateData.sale = productUpdateData.discount !== 0;
+    return productUpdateData;
   }
 }
