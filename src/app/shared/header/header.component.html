@@ -1,16 +1,16 @@
 <mat-toolbar>
   @for (item of navBarItems; track $index) {
-  <button mat-button routerLink="{{ item.segment }}" routerLinkActive="active">
-    {{ item.name }}
-  </button>
-  }
+    <button mat-button routerLink="{{ item.segment }}" routerLinkActive="active">
+      {{ item.name }}
+    </button>
+}
   <span class="example-spacer"></span>
-  @if (true) {
-  <button mat-icon-button aria-label="Logout icon-button with logout icon">
+  @if (loggedIn) {
+  <button mat-icon-button aria-label="Login icon-button with login icon" (click)="logout()">
     <mat-icon>logout</mat-icon>
   </button>
   }@else {
-  <button mat-icon-button aria-label="Login icon-button with login icon">
+  <button mat-icon-button aria-label="Logout icon-button with logout icon" routerLink="login">
     <mat-icon>login</mat-icon>
   </button>
   }
