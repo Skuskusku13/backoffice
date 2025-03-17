@@ -11,6 +11,7 @@ import { TransactionsService } from '../services/transactions.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { pipe, debounceTime, tap, switchMap } from 'rxjs';
+import { filterByTime } from '../utils/time-filter.utils';
 
 type BusinessState = {
   transactions: Transaction[];
@@ -30,76 +31,24 @@ const initialState: BusinessState = {
 
 export const BusinessStore = signalStore(
   withState(initialState),
-  withComputed(({ transactions, filter: revenueFilter }) => ({
+  withComputed(({ transactions, filter }) => ({
     revenue: computed(() => {
       const today = new Date();
       let amount = 0;
       for (let transaction of transactions()) {
         if (
           transaction.type == 'retraitVente' &&
-          (revenueFilter().category == 'all' ||
-            transaction.category == revenueFilter().category) &&
-          (revenueFilter().sale == 'all' ||
-            transaction.onSale == revenueFilter().sale)
+          (filter.category() == 'all' ||
+            transaction.category == filter.category()) &&
+          (filter.sale() == 'all' || transaction.onSale == filter.sale()) &&
+          filterByTime(transaction.date, filter.time())
         ) {
-          switch (revenueFilter().time) {
-            case 'year': {
-              if (transaction.date.getFullYear() === today.getFullYear()) {
-                amount += transaction.price;
-              }
-              break;
-            }
-            case 'quarter': {
-              const currentQuarter = Math.floor(today.getMonth() / 3);
-              const transactionQuarter = Math.floor(
-                transaction.date.getMonth() / 3
-              );
-              if (
-                transaction.date.getFullYear() === today.getFullYear() &&
-                transactionQuarter === currentQuarter
-              ) {
-                amount += transaction.price;
-              }
-              break;
-            }
-            case 'month': {
-              if (
-                transaction.date.getFullYear() === today.getFullYear() &&
-                transaction.date.getMonth() === today.getMonth()
-              ) {
-                amount += transaction.price;
-              }
-              break;
-            }
-            case 'week': {
-              const startOfWeek = new Date(today);
-              startOfWeek.setDate(today.getDate() - today.getDay());
-              const endOfWeek = new Date(startOfWeek);
-              endOfWeek.setDate(startOfWeek.getDate() + 6);
-              if (
-                transaction.date >= startOfWeek &&
-                transaction.date <= endOfWeek
-              ) {
-                amount += transaction.price;
-              }
-              break;
-            }
-            case 'day': {
-              if (
-                transaction.date.getFullYear() === today.getFullYear() &&
-                transaction.date.getMonth() === today.getMonth() &&
-                transaction.date.getDate() === today.getDate()
-              ) {
-                amount += transaction.price;
-              }
-              break;
-            }
-          }
+          amount += transaction.price;
         }
       }
       return amount;
     }),
-    // revenueBis: computed(() => revenue()+3),
+    // revenueBis: computed(() => store.revenue() + 3),
   })),
   withMethods((store) => ({
     updateTimeFilter(
