@@ -33,7 +33,6 @@ export const BusinessStore = signalStore(
   withState(initialState),
   withComputed(({ transactions, filter }) => ({
     revenue: computed(() => {
-      const today = new Date();
       let amount = 0;
       for (let transaction of transactions()) {
         if (
