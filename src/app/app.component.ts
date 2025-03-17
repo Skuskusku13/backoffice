@@ -13,4 +13,6 @@ import {AuthGuard} from './core/guards/auth.guard';
   ]
 })
 
-export class AppComponent {}
+export class AppComponent {
+  title = 'bo';
+}

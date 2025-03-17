@@ -32,11 +32,11 @@ export class ProductsComponent implements OnInit {
   handleProductUpdate(productUpdateData: ProductUpdateData): void {
     this.productsService.updateProduct(productUpdateData).subscribe({
       next: () => {
-        alert('Produit modifié avec succès !');
+        // alert('Produit modifié avec succès !');
         this.store.load();
       },
       error: (error) => {
-        alert('Erreur lors de la modification du produit !' + error);
+        // alert('Erreur lors de la modification du produit !' + error);
       },
     });
   }
@@ -44,11 +44,11 @@ export class ProductsComponent implements OnInit {
   handleProductsUpdate(productsUpdateData: ProductUpdateData[]) {
     this.productsService.updateProducts(productsUpdateData).subscribe({
       next: () => {
-        alert('Produits modifiés avec succès !');
+        // alert('Produits modifiés avec succès !');
         this.store.load();
       },
       error: (error) => {
-        alert('Erreur lors de la modification des produits !' + error);
+        // alert('Erreur lors de la modification des produits !' + error);
       },
     });
   }
