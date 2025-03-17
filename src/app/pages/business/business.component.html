@@ -1,6 +1,10 @@
 <h2>Business dashboard</h2>
 
+@if (store.isLoading()) {
+<app-spinner></app-spinner>
+} @else {
 <p>chiffre d'affaire {{ store.revenue() | currency : "EUR" }}</p>
+}
 
 <div class="filter-grid">
   <div class="filter-grid-one">
