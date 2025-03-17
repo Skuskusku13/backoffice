@@ -22,7 +22,7 @@ export class ProductsService {
 
   getProducts(): Observable<Product[]> {
     return this.http
-      .get<{ products: Product[] }>(API_URL + 'products')
+      .get<{ products: Product[] }>(API_URL + 'products/')
       .pipe(map((response) => response.products ?? []));
   }
 

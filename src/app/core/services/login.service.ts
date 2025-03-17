@@ -16,7 +16,14 @@ export class LoginService {
   }
 
   constructor(private http: HttpClient) {
-    this.checkToken();
+    this.checkAccessToken().subscribe({
+      next: () => {
+        this.loggedIn.next(true);
+      },
+      error: (error) => {
+        this.loggedIn.next(false);
+      },
+    });
   }
 
   login(credentials: LoginInterface): Observable<LogedInterface> {
@@ -46,11 +53,11 @@ export class LoginService {
     });
   }
 
-  private checkToken(): void {
-    const token = localStorage.getItem('access');
-    if (token) {
-      this.loggedIn.next(true);
-    }
+  private checkAccessToken(): Observable<any> {
+    const accessToken = localStorage.getItem('access');
+    return this.http.post<any>(`${API_URL}api/token/verify/`, {
+      token: accessToken,
+    });
   }
 
   getAccessToken(): string | null {
