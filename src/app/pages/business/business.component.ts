@@ -7,6 +7,7 @@ import {
 import { FilterComponent } from '../../shared/filter/filter.component';
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { BusinessStore } from '../../core/state/business.store';
+import { CurrencyPipe } from '@angular/common';
 
 /**
  * @title Business page component
@@ -14,6 +15,7 @@ import { BusinessStore } from '../../core/state/business.store';
 @Component({
   selector: 'app-business',
   imports: [
+    CurrencyPipe,
     GraphCardComponent,
     MatGridList,
     MatGridTile,
