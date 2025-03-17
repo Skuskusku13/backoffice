@@ -15,7 +15,7 @@ import { pipe, debounceTime, tap, switchMap } from 'rxjs';
 type BusinessState = {
   transactions: Transaction[];
   isLoading: boolean;
-  revenueFilter: {
+  filter: {
     time: 'year' | 'quarter' | 'month' | 'week' | 'day';
     category: number;
     sale: 'all' | boolean;
@@ -25,12 +25,12 @@ type BusinessState = {
 const initialState: BusinessState = {
   transactions: [],
   isLoading: false,
-  revenueFilter: { time: 'month', category: -1, sale: 'all' },
+  filter: { time: 'month', category: -1, sale: 'all' },
 };
 
 export const BusinessStore = signalStore(
   withState(initialState),
-  withComputed(({ transactions, revenueFilter }) => ({
+  withComputed(({ transactions, filter: revenueFilter }) => ({
     revenue: computed(() => {
       const today = new Date();
       let amount = 0;
@@ -105,17 +105,17 @@ export const BusinessStore = signalStore(
       time: 'year' | 'quarter' | 'month' | 'week' | 'day'
     ): void {
       patchState(store, (state) => ({
-        revenueFilter: { ...state.revenueFilter, time },
+        filter: { ...state.filter, time },
       }));
     },
     updateCategoryFilter(category: number): void {
       patchState(store, (state) => ({
-        revenueFilter: { ...state.revenueFilter, category },
+        filter: { ...state.filter, category },
       }));
     },
     updateSaleFilter(sale: 'all' | boolean): void {
       patchState(store, (state) => ({
-        revenueFilter: { ...state.revenueFilter, sale },
+        filter: { ...state.filter, sale },
       }));
     },
   })),
