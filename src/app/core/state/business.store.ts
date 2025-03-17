@@ -17,7 +17,7 @@ type BusinessState = {
   isLoading: boolean;
   filter: {
     time: 'year' | 'quarter' | 'month' | 'week' | 'day';
-    category: number;
+    category: 'all' | number;
     sale: 'all' | boolean;
   };
 };
@@ -25,7 +25,7 @@ type BusinessState = {
 const initialState: BusinessState = {
   transactions: [],
   isLoading: false,
-  filter: { time: 'month', category: -1, sale: 'all' },
+  filter: { time: 'month', category: 'all', sale: 'all' },
 };
 
 export const BusinessStore = signalStore(
@@ -36,10 +36,11 @@ export const BusinessStore = signalStore(
       let amount = 0;
       for (let transaction of transactions()) {
         if (
-          transaction.type === 'retraitVente' &&
-          transaction.category === revenueFilter().category &&
-          (revenueFilter().sale === 'all' ||
-            transaction.onSale === revenueFilter().sale)
+          transaction.type == 'retraitVente' &&
+          (revenueFilter().category == 'all' ||
+            transaction.category == revenueFilter().category) &&
+          (revenueFilter().sale == 'all' ||
+            transaction.onSale == revenueFilter().sale)
         ) {
           switch (revenueFilter().time) {
             case 'year': {

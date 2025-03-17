@@ -19,6 +19,13 @@ export class TransactionsService {
   getTransactions(): Observable<Transaction[]> {
     return this.http
       .get<{ transactions: Transaction[] }>(API_URL + 'transactions/')
-      .pipe(map((response) => response.transactions ?? []));
+      .pipe(
+        map((response) =>
+          (response.transactions ?? []).map((transaction) => ({
+            ...transaction,
+            date: new Date(transaction.date),
+          }))
+        )
+      );
   }
 }
