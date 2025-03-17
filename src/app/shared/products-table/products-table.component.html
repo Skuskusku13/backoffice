@@ -130,14 +130,6 @@
       ></tr>
     </table>
   </form>
-
-  <mat-paginator
-    [pageSizeOptions]="[10, 20, 50]"
-    showFirstLastButtons
-    aria-label="Select page of products"
-  >
-  </mat-paginator>
-
   @if (true) {
   <div class="send-all-button-container">
     <button
@@ -151,4 +143,12 @@
     </button>
   </div>
   }
+
+  <mat-paginator
+    [pageSizeOptions]="[10, 20, 50]"
+    showFirstLastButtons
+    aria-label="Select page of products"
+  >
+  </mat-paginator>
+
 </div>

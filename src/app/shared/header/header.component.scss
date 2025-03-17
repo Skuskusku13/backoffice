@@ -5,3 +5,7 @@
 .active {
   background-color: rgba(25, 118, 210, 0.1);
 }
+
+mat-icon {
+  color: var(--mat-sys-on-primary-container);
+}
