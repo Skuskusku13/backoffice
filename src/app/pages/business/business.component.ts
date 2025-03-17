@@ -8,6 +8,7 @@ import { FilterComponent } from '../../shared/filter/filter.component';
 import { Component, inject, OnInit } from '@angular/core';
 import { BusinessStore } from '../../core/state/business.store';
 import { CurrencyPipe } from '@angular/common';
+import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 
 /**
  * @title Business page component
@@ -16,6 +17,7 @@ import { CurrencyPipe } from '@angular/common';
   selector: 'app-business',
   imports: [
     CurrencyPipe,
+    SpinnerComponent,
     GraphCardComponent,
     MatGridList,
     MatGridTile,

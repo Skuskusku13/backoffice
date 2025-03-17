@@ -1,6 +1,10 @@
 <h2>Business dashboard</h2>
 
+@if (store.isLoading()) {
+<app-spinner></app-spinner>
+} @else {
 <p>chiffre d'affaire {{ store.revenue() | currency : "EUR" }}</p>
+}
 
 <mat-grid-list cols="3" rowHeight="1:1" gutterSize="16px" class="grid-container">
   <mat-grid-tile>

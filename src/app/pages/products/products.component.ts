@@ -1,17 +1,17 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProductsTableComponent } from '../../shared/products-table/products-table.component';
 import { ProductsStore } from '../../core/state/products.store';
 import { ProductUpdateData } from '../../core/models/product-update-dto.interface';
 import { ProductsService } from '../../core/services/products.service';
+import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 
 /**
  * @title Products page component
  */
 @Component({
   selector: 'app-products',
-  imports: [MatTabsModule, MatProgressSpinnerModule, ProductsTableComponent],
+  imports: [MatTabsModule, ProductsTableComponent, SpinnerComponent],
   providers: [ProductsStore],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
