@@ -123,11 +123,7 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: displayedColumns"
-        (click)="sendRowUpdates(row)"
-      ></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </form>
   @if (true) {
@@ -150,5 +146,4 @@
     aria-label="Select page of products"
   >
   </mat-paginator>
-
 </div>

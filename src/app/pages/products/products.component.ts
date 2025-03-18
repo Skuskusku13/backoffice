@@ -36,6 +36,7 @@ export class ProductsComponent implements OnInit {
         this.store.load();
       },
       error: (error) => {
+        console.log(error);
         // alert('Erreur lors de la modification du produit !' + error);
       },
     });
@@ -48,6 +49,7 @@ export class ProductsComponent implements OnInit {
         this.store.load();
       },
       error: (error) => {
+        console.log(error);
         // alert('Erreur lors de la modification des produits !' + error);
       },
     });

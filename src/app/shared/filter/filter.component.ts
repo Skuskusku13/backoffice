@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {FormsModule} from '@angular/forms';
-import {MatInput} from '@angular/material/input';
 
 @Component({
   selector: 'app-filter',
@@ -21,7 +20,7 @@ import {MatInput} from '@angular/material/input';
 export class FilterComponent implements OnInit{
 
   @Input() filters: { value: string, viewValue: string }[] = []
-  @Input() titleForm: string = '';
+  @Input() titleForm = '';
 
   selectedValue = ""
 
