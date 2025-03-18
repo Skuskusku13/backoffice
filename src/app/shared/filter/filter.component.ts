@@ -28,7 +28,6 @@ export class FilterComponent implements OnInit {
   }
 
   onFilterChange($event: any) {
-    console.log('event_value',$event.value);
     this.filterUpdate.emit($event.value);
   }
 }
