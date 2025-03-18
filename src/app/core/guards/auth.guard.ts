@@ -1,6 +1,6 @@
-import {inject, Injectable} from '@angular/core';
-import {CanActivate, CanActivateFn, Router} from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
+import {inject} from '@angular/core';
+import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
 import { map } from 'rxjs/operators';
 import {LoginService} from '../services/login.service';
 

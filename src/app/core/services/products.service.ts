@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, Observable, Subscription } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { API_URL } from '../utils/constants.utils';
 import { ProductUpdateData } from '../models/product-update-dto.interface';
 
