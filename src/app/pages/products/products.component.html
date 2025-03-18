@@ -7,7 +7,7 @@
   @for (category of categories; track $index) {
   <mat-tab label="{{ category.name }}">
     @if (store.isLoading()) {
-    <app-spinner></app-spinner>
+    <hand-spinner></hand-spinner>
     } @else {
     <app-products-table
       [products]="store.sortedProducts()"
