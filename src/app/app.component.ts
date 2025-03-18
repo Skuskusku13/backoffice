@@ -15,6 +15,7 @@ import {LoginService} from './core/services/login.service';
 })
 
 export class AppComponent implements OnInit {
+  title = 'bo';
   private loginService = inject(LoginService);
 
   ngOnInit() {
