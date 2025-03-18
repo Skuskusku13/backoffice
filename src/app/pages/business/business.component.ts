@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { BusinessStore } from '../../core/state/business.store';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
+import { LineChartComponent } from "../../shared/line-chart/line-chart.component";
 
 /**
  * @title Business page component
@@ -26,7 +27,8 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
     MatGridTile,
     MatGridListModule,
     FilterComponent,
-  ],
+    LineChartComponent
+],
   providers: [BusinessStore],
   templateUrl: './business.component.html',
   styleUrl: './business.component.scss',

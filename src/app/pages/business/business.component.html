@@ -34,11 +34,13 @@
       }}
     </div>
   </mat-grid-tile>
-  <mat-grid-tile [colspan]="3" [rowspan]="12" [style.background]="'lightgrey'"
+  <mat-grid-tile [colspan]="3" [rowspan]="12"
     ><div id="chart-tile">
       @if (store.isLoading()) {
       <hand-spinner></hand-spinner>
-      } @else {chart}
+      } @else {
+      <app-line-chart></app-line-chart>
+      }
     </div></mat-grid-tile
   >
 </mat-grid-list>
