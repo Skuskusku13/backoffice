@@ -10,13 +10,13 @@ import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { ProductsService } from '../services/products.service';
-import { pipe, debounceTime, distinctUntilChanged, tap, switchMap } from 'rxjs';
+import { pipe, debounceTime, tap, switchMap } from 'rxjs';
 
-type ProductsState = {
+interface ProductsState {
   products: Product[];
   isLoading: boolean;
   category: number;
-};
+}
 
 const initialState: ProductsState = {
   products: [],

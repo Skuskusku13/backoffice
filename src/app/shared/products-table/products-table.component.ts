@@ -105,9 +105,9 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
   }
 
   // s'active au clic sur une ligne
-  sendRowUpdates(row: Product): void {
-    // console.log('clickOnProduct:', row);
-  }
+  // sendRowUpdates(row: Product): void {
+  //   console.log('clickOnProduct:', row);
+  // }
 
   isModified(index: number): boolean {
     const productGroup = this.productsArray.at(index) as FormGroup;

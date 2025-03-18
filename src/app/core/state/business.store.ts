@@ -13,7 +13,7 @@ import { tapResponse } from '@ngrx/operators';
 import { pipe, debounceTime, tap, switchMap } from 'rxjs';
 import { filterByTime } from '../utils/time-filter.utils';
 
-type BusinessState = {
+interface BusinessState {
   transactions: Transaction[];
   isLoading: boolean;
   filter: {
@@ -21,7 +21,7 @@ type BusinessState = {
     category: 'all' | number;
     sale: 'all' | boolean;
   };
-};
+}
 
 const initialState: BusinessState = {
   transactions: [],
@@ -34,7 +34,7 @@ export const BusinessStore = signalStore(
   withComputed(({ transactions, filter }) => ({
     revenue: computed(() => {
       let amount = 0;
-      for (let transaction of transactions()) {
+      for (const transaction of transactions()) {
         if (
           transaction.type == 'retraitVente' &&
           (filter.category() == 'all' ||

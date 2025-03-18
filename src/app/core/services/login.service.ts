@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../utils/constants.utils';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { LoginInterface } from '../models/login.interface';
 import { LogedInterface } from '../models/loged.interface';
 
@@ -21,6 +21,7 @@ export class LoginService {
         this.loggedIn.next(true);
       },
       error: (error) => {
+        console.log(error);
         this.loggedIn.next(false);
       },
     });
