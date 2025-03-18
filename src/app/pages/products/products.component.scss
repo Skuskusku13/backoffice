@@ -1,9 +1,30 @@
 mat-tab {
   margin-top: 10%;
 }
+::ng-deep .info-snackbar {
+  &.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: var(--mat-sys-primary);
+    --mdc-snackbar-button-color: white;
+    --mdc-snackbar-supporting-text-color: white;
+  }
 
-.spinner-container{
-    display: flex;
-    justify-content: center;
-    margin: 2%;
+  .mdc-snackbar__surface {
+    border-radius: 8px !important;
+  }
+
+  .mat-mdc-snack-bar-actions {
+    padding-inline-start: 8px;
+  }
+}
+
+::ng-deep .error-snackbar {
+  &.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: var(--mat-sys-error);
+    --mdc-snackbar-button-color: white;
+    --mdc-snackbar-supporting-text-color: white;
+  }
+
+  .mdc-snackbar__surface {
+    border-radius: 8px !important;
+  }
 }

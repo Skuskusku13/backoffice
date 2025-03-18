@@ -23,7 +23,6 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ProductUpdateData } from '../../core/models/product-update-dto.interface';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 /**
@@ -68,10 +67,7 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
   public productUpdate = output<ProductUpdateData>();
   public productsUpdate = output<ProductUpdateData[]>();
 
-  constructor(
-    private fb: FormBuilder,
-    private _snackBar: MatSnackBar
-  ) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['products'] && this.products) {
@@ -105,9 +101,9 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
   }
 
   // s'active au clic sur une ligne
-  sendRowUpdates(row: Product): void {
-    // console.log('clickOnProduct:', row);
-  }
+  // sendRowUpdates(row: Product): void {
+  //   console.log('clickOnProduct:', row);
+  // }
 
   isModified(index: number): boolean {
     const productGroup = this.productsArray.at(index) as FormGroup;
@@ -122,46 +118,18 @@ export class ProductsTableComponent implements AfterViewInit, OnChanges {
   }
 
   onSubmit(index: number): void {
-    const productUpdateData: ProductUpdateData = this.productsArray.at(index).value;
+    const productUpdateData: ProductUpdateData =
+      this.productsArray.at(index).value;
     this.updateProductData(productUpdateData);
     this.productUpdate.emit(productUpdateData);
-    this._snackBar.open('Mise à jour effectuée avec succès ✓', 'Fermer', {
-      duration: 4000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-      panelClass: ['custom-snackbar'],
-    });
   }
 
   onSubmitAllUpdates(): void {
     const productsUpdateData: ProductUpdateData[] = this.productsArray.value;
-    
-    // Vérifier s'il y a des modifications
-    const hasModifications = productsUpdateData.some(
-      product => product.discount !== 0 || product.quantityInStock !== 0
-    );
-
-    if (!hasModifications) {
-      this._snackBar.open('Aucune modification n\'a été effectuée ⚠️', 'Fermer', {
-        duration: 4000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-        panelClass: ['error-snackbar'],
-      });
-      return;
-    }
-
-    // Si des modifications existent, continuer avec la mise à jour
     for (const productUpdateData of productsUpdateData) {
       this.updateProductData(productUpdateData);
     }
     this.productsUpdate.emit(productsUpdateData);
-    this._snackBar.open('Toutes les mises à jour ont été effectuées ✓', 'Fermer', {
-      duration: 4000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-      panelClass: ['custom-snackbar'],
-    });
   }
 
   updateProductData(productUpdateData: ProductUpdateData): ProductUpdateData {

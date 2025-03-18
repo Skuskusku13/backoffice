@@ -33,32 +33,3 @@ mat-form-field {
   justify-content: center;
   margin: 1%;
 }
-
-// Styles pour le snack-bar personnalisé
-::ng-deep .custom-snackbar {
-  &.mat-mdc-snack-bar-container {
-    --mdc-snackbar-container-color: #2196F3;
-    --mat-mdc-snack-bar-button-color: white;
-    --mdc-snackbar-supporting-text-color: white;
-  }
-
-  .mdc-snackbar__surface {
-    border-radius: 8px !important;
-  }
-
-  .mat-mdc-snack-bar-actions {
-    padding-inline-start: 8px;
-  }
-}
-
-::ng-deep .error-snackbar {
-  &.mat-mdc-snack-bar-container {
-    --mdc-snackbar-container-color: #f44336;
-    --mat-mdc-snack-bar-button-color: white;
-    --mdc-snackbar-supporting-text-color: white;
-  }
-
-  .mdc-snackbar__surface {
-    border-radius: 8px !important;
-  }
-}
