@@ -26,7 +26,7 @@ interface BusinessState {
 const initialState: BusinessState = {
   transactions: [],
   isLoading: false,
-  filter: { time: 'month', category: 'all', sale: 'all' },
+  filter: { time: 'year', category: 'all', sale: 'all' },
 };
 
 export const BusinessStore = signalStore(

@@ -41,12 +41,12 @@ export class BusinessComponent implements OnInit {
       valuePercent: 0,
     },
     {
-      title: 'Résultat comptable',
+      title: 'Résultats comptables',
       sales: 14,
       valuePercent: 0,
     },
     {
-      title: 'Impôt',
+      title: 'Impôts',
       sales: 6,
       valuePercent: 0,
     },
@@ -69,7 +69,7 @@ export class BusinessComponent implements OnInit {
 
   typesVentes = [
     { value: 'all', viewValue: 'Tous', titleForm: 'Types de ventes' },
-    { value: 'false', viewValue: 'Achats' },
+    { value: 'false', viewValue: 'Prix fort' },
     { value: 'true', viewValue: 'Promotions' },
   ];
 
