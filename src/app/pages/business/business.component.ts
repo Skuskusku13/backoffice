@@ -5,7 +5,7 @@ import {
   MatGridTile,
 } from '@angular/material/grid-list';
 import { FilterComponent } from '../../shared/filter/filter.component';
-import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, effect, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { BusinessStore } from '../../core/state/business.store';
 import { CurrencyPipe } from '@angular/common';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
@@ -34,7 +34,7 @@ export class BusinessComponent implements OnInit {
   data: any = [
     {
       title: "Chiffre d'affaire",
-      sales: 20,
+      sales: this.store.revenue(),
       valuePercent: 0,
     },
     {
@@ -69,6 +69,12 @@ export class BusinessComponent implements OnInit {
     { value: 'false', viewValue: 'Achats' },
     { value: 'true', viewValue: 'Promotions' },
   ];
+
+  constructor() {
+    effect(() => {
+      this.data[0].sales = this.store.revenue();
+    });
+  }
 
   ngOnInit(): void {
     this.store.load();
