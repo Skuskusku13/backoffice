@@ -34,7 +34,7 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 })
 export class BusinessComponent implements OnInit {
   readonly store = inject(BusinessStore);
-  data: any = [
+  filters: any = [
     {
       title: "Chiffre d'affaire",
       sales: this.store.revenue(),
@@ -75,7 +75,7 @@ export class BusinessComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      this.data[0].sales = this.store.revenue();
+      this.filters[0].sales = this.store.revenue();
     });
   }
 

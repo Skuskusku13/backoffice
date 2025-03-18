@@ -1,59 +1,44 @@
 <h2>Business dashboard</h2>
 
-@if (store.isLoading()) {
-<hand-spinner></hand-spinner>
-} @else {
-<div class="filter-grid">
-  <div class="filter-grid-one">
-    <mat-grid-list
-      cols="3"
-      rowHeight="16:9"
-      gutterSize="16px"
-      class="grid-container"
-    >
-      <mat-grid-tile>
-        <app-filter
-          [titleForm]="'Période'"
-          [filters]="periodes"
-          (filterUpdate)="store.updateTimeFilter($event)"
-        ></app-filter>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <app-filter
-          [titleForm]="'Catégories'"
-          [filters]="categories"
-          (filterUpdate)="store.updateCategoryFilter($event)"
-        ></app-filter>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <app-filter
-          [titleForm]="'Types de ventes'"
-          [filters]="typesVentes"
-          (filterUpdate)="store.updateSaleFilter($event)"
-        ></app-filter>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </div>
-
-  <div class="filter-grid-two">
-    <mat-grid-list
-      cols="3"
-      rowHeight="16:9"
-      gutterSize="16px"
-      class="grid-container"
-    >
-      @for (d of data; track $index) {
-      <mat-grid-tile>
-        <app-graph-card
-          style="width: 100%"
-          class="card-container-graph"
-          [titleGraph]="d.title"
-          [sales]="d.sales"
-        >
-        </app-graph-card>
-      </mat-grid-tile>
-      }
-    </mat-grid-list>
-  </div>
-</div>
-}
+<mat-grid-list cols="4" rowHeight="fit" style="height: 70vh" gutterSize="15px">
+  <mat-grid-tile [colspan]="3" [rowspan]="2">
+    <div id="filters-tile">
+      @if (store.isLoading()) {
+      <hand-spinner></hand-spinner>
+      } @else {
+      <app-filter
+        [titleForm]="'Période'"
+        [filters]="periodes"
+        (filterUpdate)="store.updateTimeFilter($event)"
+      ></app-filter>
+      <app-filter
+        [titleForm]="'Catégories'"
+        [filters]="categories"
+        (filterUpdate)="store.updateCategoryFilter($event)"
+      ></app-filter>
+      <app-filter
+        [titleForm]="'Types de ventes'"
+        [filters]="typesVentes"
+        (filterUpdate)="store.updateSaleFilter($event)"
+      ></app-filter
+      >}
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1" [rowspan]="12"
+    ><div id="metrics-tile">
+      @if (store.isLoading()) {
+      <hand-spinner></hand-spinner>
+      } @else { @for (filter of filters; track $index) {
+      <app-graph-card [titleGraph]="filter.title" [sales]="filter.sales">
+      </app-graph-card>
+      }}
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="3" [rowspan]="12" [style.background]="'lightgrey'"
+    ><div id="chart-tile">
+      @if (store.isLoading()) {
+      <hand-spinner></hand-spinner>
+      } @else {chart}
+    </div></mat-grid-tile
+  >
+</mat-grid-list>
