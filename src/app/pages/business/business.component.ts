@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {GraphCardComponent} from '../../shared/graph-card/graph-card.component';
 import {MatGridList, MatGridListModule, MatGridTile} from '@angular/material/grid-list';
 import {FilterComponent} from '../../shared/filter/filter.component';
@@ -17,6 +17,7 @@ import {FilterComponent} from '../../shared/filter/filter.component';
   ],
   templateUrl: './business.component.html',
   styleUrl: './business.component.scss',
+  // encapsulation: ViewEncapsulation.None
 })
 export class BusinessComponent implements OnInit {
 

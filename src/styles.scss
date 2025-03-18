@@ -43,4 +43,8 @@ h2 {
       container-background-color: var(--mat-sys-surface-container-lowest),
     )
   );
+  @include mat.select-overrides((
+    panel-background-color: #fff,
+    focused-arrow-color: blue
+  ))
 }

@@ -1,33 +1,39 @@
 <h2>Business dashboard</h2>
 
-<mat-grid-list cols="3" rowHeight="1:1" gutterSize="16px" class="grid-container">
-  <mat-grid-tile>
-    <app-filter
-      [titleForm]="'Période'"
-      [filters]="filters"
-    ></app-filter>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <app-filter
-      [titleForm]="'Catégories'"
-      [filters]="categories"
-    ></app-filter>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <app-filter
-      [titleForm]="'Types de ventes'"
-      [filters]="typeVentes"
-    ></app-filter>
-  </mat-grid-tile>
-</mat-grid-list>
+<div class="filter-grid">
+  <div class="filter-grid-one">
+    <mat-grid-list cols="3" rowHeight="16:9" gutterSize="16px" class="grid-container">
+      <mat-grid-tile>
+        <app-filter
+          [titleForm]="'Période'"
+          [filters]="filters"
+        ></app-filter>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <app-filter
+          [titleForm]="'Catégories'"
+          [filters]="categories"
+        ></app-filter>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <app-filter
+          [titleForm]="'Types de ventes'"
+          [filters]="typeVentes"
+        ></app-filter>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
 
-<mat-grid-list cols="3" rowHeight="1:1" gutterSize="16px" class="grid-container">
-  @for (d of data; track $index) {
-    <mat-grid-tile>
-      <app-graph-card style="width: 100%" class="card-container-graph"
-                      [titleGraph]="d.title"
-                      [sales]="d.sales">
-      </app-graph-card>
-    </mat-grid-tile>
-  }
-</mat-grid-list>
+  <div class="filter-grid-two">
+    <mat-grid-list cols="3" rowHeight="16:9" gutterSize="16px" class="grid-container">
+      @for (d of data; track $index) {
+        <mat-grid-tile>
+          <app-graph-card style="width: 100%" class="card-container-graph"
+                          [titleGraph]="d.title"
+                          [sales]="d.sales">
+          </app-graph-card>
+        </mat-grid-tile>
+      }
+    </mat-grid-list>
+  </div>
+</div>
