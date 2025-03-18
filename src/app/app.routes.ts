@@ -6,7 +6,7 @@ import {LoginComponent} from './pages/login/login.component';
 import {AuthGuard} from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'products', pathMatch: 'full' },
   { path: 'login', title: 'BackOffice | Login', component: LoginComponent },
   { path: 'home', title: 'BackOffice | Home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'products', title: 'BackOffice | Products', component: ProductsComponent, canActivate: [AuthGuard] },
