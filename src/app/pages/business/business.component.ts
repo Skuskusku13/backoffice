@@ -10,7 +10,6 @@ import {
   effect,
   inject,
   OnInit,
-  ViewEncapsulation,
 } from '@angular/core';
 import { BusinessStore } from '../../core/state/business.store';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
@@ -82,6 +81,5 @@ export class BusinessComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.load();
-    console.log(this.data);
   }
 }

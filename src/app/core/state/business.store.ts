@@ -34,9 +34,7 @@ export const BusinessStore = signalStore(
   withComputed(({ transactions, filter }) => ({
     revenue: computed(() => {
       let amount = 0;
-      console.log('typeof filtersale', typeof filter.sale(), filter.sale());
       for (const transaction of transactions()) {
-        console.log('Transaction onSale (bool):', !!transaction.onSale);
         if (
           transaction.type == 'retraitVente' &&
           (filter.category() == 'all' ||
@@ -82,8 +80,8 @@ export const BusinessStore = signalStore(
             tapResponse({
               next: (transactions) => {
                 patchState(store, { transactions, isLoading: false });
-                console.log(store.transactions());
-                console.log(store.revenue());
+                // console.log(store.transactions());
+                // console.log(store.revenue());
               },
               error: (err) => {
                 patchState(store, { isLoading: false });
