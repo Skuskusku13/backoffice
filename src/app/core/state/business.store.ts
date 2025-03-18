@@ -19,7 +19,7 @@ interface BusinessState {
   filter: {
     time: 'year' | 'quarter' | 'month' | 'week' | 'day';
     category: 'all' | number;
-    sale: 'all' | boolean;
+    sale: 'all' | string;
   };
 }
 
@@ -34,12 +34,15 @@ export const BusinessStore = signalStore(
   withComputed(({ transactions, filter }) => ({
     revenue: computed(() => {
       let amount = 0;
+      console.log('typeof filtersale', typeof filter.sale(), filter.sale());
       for (const transaction of transactions()) {
+        console.log('Transaction onSale (bool):', !!transaction.onSale);
         if (
           transaction.type == 'retraitVente' &&
           (filter.category() == 'all' ||
             transaction.category == filter.category()) &&
-          (filter.sale() == 'all' || transaction.onSale == filter.sale()) &&
+          (filter.sale() === 'all' ||
+            transaction.onSale === (filter.sale() === 'true')) &&
           filterByTime(transaction.date, filter.time())
         ) {
           amount += transaction.price;
@@ -62,7 +65,7 @@ export const BusinessStore = signalStore(
         filter: { ...state.filter, category },
       }));
     },
-    updateSaleFilter(sale: 'all' | boolean): void {
+    updateSaleFilter(sale: 'all' | string): void {
       patchState(store, (state) => ({
         filter: { ...state.filter, sale },
       }));

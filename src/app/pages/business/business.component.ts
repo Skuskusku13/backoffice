@@ -5,9 +5,14 @@ import {
   MatGridTile,
 } from '@angular/material/grid-list';
 import { FilterComponent } from '../../shared/filter/filter.component';
-import { Component, effect, inject, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { BusinessStore } from '../../core/state/business.store';
-import { CurrencyPipe } from '@angular/common';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 
 /**
@@ -16,7 +21,6 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 @Component({
   selector: 'app-business',
   imports: [
-    CurrencyPipe,
     SpinnerComponent,
     GraphCardComponent,
     MatGridList,
@@ -49,7 +53,7 @@ export class BusinessComponent implements OnInit {
     },
   ];
 
-  filters = [
+  periodes = [
     { value: 'year', viewValue: 'Annuel', titleForm: 'Période' },
     { value: 'quarter', viewValue: 'Trimestriel' },
     { value: 'month', viewValue: 'Mensuel' },
@@ -64,7 +68,7 @@ export class BusinessComponent implements OnInit {
     { value: '2', viewValue: 'Crustacés' },
   ];
 
-  typeVentes = [
+  typesVentes = [
     { value: 'all', viewValue: 'Tous', titleForm: 'Types de ventes' },
     { value: 'false', viewValue: 'Achats' },
     { value: 'true', viewValue: 'Promotions' },

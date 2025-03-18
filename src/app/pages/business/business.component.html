@@ -3,8 +3,6 @@
 @if (store.isLoading()) {
 <hand-spinner></hand-spinner>
 } @else {
-<p>chiffre d'affaire {{ store.revenue() | currency : "EUR" }}</p>
-
 <div class="filter-grid">
   <div class="filter-grid-one">
     <mat-grid-list
@@ -14,18 +12,24 @@
       class="grid-container"
     >
       <mat-grid-tile>
-        <app-filter [titleForm]="'Période'" [filters]="filters"></app-filter>
+        <app-filter
+          [titleForm]="'Période'"
+          [filters]="periodes"
+          (filterUpdate)="store.updateTimeFilter($event)"
+        ></app-filter>
       </mat-grid-tile>
       <mat-grid-tile>
         <app-filter
           [titleForm]="'Catégories'"
           [filters]="categories"
+          (filterUpdate)="store.updateCategoryFilter($event)"
         ></app-filter>
       </mat-grid-tile>
       <mat-grid-tile>
         <app-filter
           [titleForm]="'Types de ventes'"
-          [filters]="typeVentes"
+          [filters]="typesVentes"
+          (filterUpdate)="store.updateSaleFilter($event)"
         ></app-filter>
       </mat-grid-tile>
     </mat-grid-list>
