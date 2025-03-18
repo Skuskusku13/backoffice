@@ -1,7 +1,7 @@
 <mat-card class="example-card" appearance="outlined">
   <mat-card-header>
     <mat-card-title-group style="display: block; text-align: center">
-      <mat-card-title>{{ sales | currency : "EUR" }} </mat-card-title>
+      <mat-card-title [ngStyle]="{'color': (sales >= 0) ? '#00b426' : 'var(--mat-sys-error)'}">{{ sales | currency : "EUR" }} </mat-card-title>
       <mat-card-subtitle>
         {{ titleGraph }}
       </mat-card-subtitle>

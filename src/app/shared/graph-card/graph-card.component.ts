@@ -6,7 +6,7 @@ import {
   MatCardModule,
   MatCardTitleGroup,
 } from '@angular/material/card';
-import { CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-graph-card',
@@ -17,6 +17,7 @@ import { CurrencyPipe } from '@angular/common';
     MatCardContent,
     MatCardModule,
     CurrencyPipe,
+    CommonModule,
   ],
   standalone: true,
   templateUrl: './graph-card.component.html',

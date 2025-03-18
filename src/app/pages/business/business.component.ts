@@ -42,7 +42,7 @@ export class BusinessComponent implements OnInit {
     },
     {
       title: 'Résultats comptables',
-      sales: 14,
+      sales: -14,
       valuePercent: 0,
     },
     {

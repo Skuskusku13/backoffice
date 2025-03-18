@@ -50,7 +50,7 @@ export const BusinessStore = signalStore(
     }),
     // revenueBis: computed(() => store.revenue() + 3),
   })),
-  withMethods((store) => ({
+  withMethods((store, booksService = inject(TransactionsService)) => ({
     updateTimeFilter(
       time: 'year' | 'quarter' | 'month' | 'week' | 'day'
     ): void {
@@ -68,8 +68,6 @@ export const BusinessStore = signalStore(
         filter: { ...state.filter, sale },
       }));
     },
-  })),
-  withMethods((store, booksService = inject(TransactionsService)) => ({
     load: rxMethod<void>(
       pipe(
         debounceTime(300),
