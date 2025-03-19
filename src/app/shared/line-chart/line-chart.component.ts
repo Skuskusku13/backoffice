@@ -19,9 +19,9 @@ export class LineChartComponent implements OnInit {
         {
           label: "Chiffre d'affaire",
           data: [10, 20, 80, 40, 50, 10, 70],
-          borderColor: 'blue',
+          borderColor: '#3e8bff',
           backgroundColor: 'rgba(0, 0, 255, 0.3)',
-          tension: 0.4,
+          tension: 0,
         },
       ],
     };
