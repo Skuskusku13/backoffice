@@ -3,9 +3,6 @@
 <mat-grid-list cols="4" rowHeight="fit" style="height: 70vh" gutterSize="15px">
   <mat-grid-tile [colspan]="3" [rowspan]="2">
     <div id="filters-tile">
-      @if (store.isLoading()) {
-      <hand-spinner></hand-spinner>
-      } @else {
       <app-filter
         [titleForm]="'Période'"
         [filters]="periodes"
@@ -20,8 +17,7 @@
         [titleForm]="'Types de ventes'"
         [filters]="typesVentes"
         (filterUpdate)="store.updateSaleFilter($event)"
-      ></app-filter
-      >}
+      ></app-filter>
     </div>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="1" [rowspan]="12"

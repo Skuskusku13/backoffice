@@ -17,8 +17,8 @@ export class LineChartComponent implements OnInit {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
       datasets: [
         {
-          label: 'Sample Data',
-          data: [10, 20, 30, 40, 50, 60, 70],
+          label: "Chiffre d'affaire",
+          data: [10, 20, 80, 40, 50, 10, 70],
           borderColor: 'blue',
           backgroundColor: 'rgba(0, 0, 255, 0.3)',
           tension: 0.4,
@@ -29,7 +29,7 @@ export class LineChartComponent implements OnInit {
       responsive: true,
       plugins: {
         legend: {
-          display: true,
+          display: false,
         },
         tooltip: {
           enabled: true,
@@ -37,10 +37,20 @@ export class LineChartComponent implements OnInit {
       },
       scales: {
         x: {
-          beginAtZero: true,
+          ticks: {
+            color: '#333',
+          },
         },
         y: {
           beginAtZero: true,
+          ticks: {
+            color: '#333',
+          },
+          title: {
+            display: true,
+            text: "Chiffre d'affaires (€)",
+            color: '#555',
+          },
         },
       },
     };
