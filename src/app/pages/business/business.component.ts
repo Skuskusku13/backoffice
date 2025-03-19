@@ -5,10 +5,15 @@ import {
   MatGridTile,
 } from '@angular/material/grid-list';
 import { FilterComponent } from '../../shared/filter/filter.component';
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { BusinessStore } from '../../core/state/business.store';
-import { CurrencyPipe } from '@angular/common';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
+import { LineChartComponent } from "../../shared/line-chart/line-chart.component";
 
 /**
  * @title Business page component
@@ -16,39 +21,40 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 @Component({
   selector: 'app-business',
   imports: [
-    CurrencyPipe,
     SpinnerComponent,
     GraphCardComponent,
     MatGridList,
     MatGridTile,
     MatGridListModule,
     FilterComponent,
-  ],
+    LineChartComponent
+],
   providers: [BusinessStore],
   templateUrl: './business.component.html',
   styleUrl: './business.component.scss',
+  // encapsulation: ViewEncapsulation.None
 })
 export class BusinessComponent implements OnInit {
   readonly store = inject(BusinessStore);
-  data: any = [
+  filters: any = [
     {
       title: "Chiffre d'affaire",
-      sales: 20,
+      sales: this.store.revenue(),
       valuePercent: 0,
     },
     {
-      title: 'Résultat comptable',
-      sales: 14,
+      title: 'Résultats comptables',
+      sales: -14,
       valuePercent: 0,
     },
     {
-      title: 'Impôt',
+      title: 'Impôts',
       sales: 6,
       valuePercent: 0,
     },
   ];
 
-  filters = [
+  periodes = [
     { value: 'year', viewValue: 'Annuel', titleForm: 'Période' },
     { value: 'quarter', viewValue: 'Trimestriel' },
     { value: 'month', viewValue: 'Mensuel' },
@@ -63,14 +69,19 @@ export class BusinessComponent implements OnInit {
     { value: '2', viewValue: 'Crustacés' },
   ];
 
-  typeVentes = [
+  typesVentes = [
     { value: 'all', viewValue: 'Tous', titleForm: 'Types de ventes' },
-    { value: 'false', viewValue: 'Achats' },
+    { value: 'false', viewValue: 'Prix fort' },
     { value: 'true', viewValue: 'Promotions' },
   ];
 
+  constructor() {
+    effect(() => {
+      this.filters[0].sales = this.store.revenue();
+    });
+  }
+
   ngOnInit(): void {
     this.store.load();
-    console.log(this.data);
   }
 }

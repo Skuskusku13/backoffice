@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   MatCard,
   MatCardContent,
@@ -6,7 +6,7 @@ import {
   MatCardModule,
   MatCardTitleGroup,
 } from '@angular/material/card';
-import { CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-graph-card',
@@ -17,16 +17,13 @@ import { CurrencyPipe } from '@angular/common';
     MatCardContent,
     MatCardModule,
     CurrencyPipe,
+    CommonModule,
   ],
   standalone: true,
   templateUrl: './graph-card.component.html',
   styleUrl: './graph-card.component.scss',
 })
-export class GraphCardComponent implements OnInit {
+export class GraphCardComponent {
   @Input() titleGraph = '';
   @Input() sales = 0;
-
-  ngOnInit(): void {
-    console.log('init graph component');
-  }
 }

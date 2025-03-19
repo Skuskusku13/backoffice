@@ -1,9 +1,13 @@
 <form>
   <mat-form-field>
     <mat-label>{{ titleForm }}</mat-label>
-    <mat-select [(ngModel)]="selectedValue" name="food">
+    <mat-select
+      [(ngModel)]="selectedValue"
+      name="filter"
+      (selectionChange)="onFilterChange($event)"
+    >
       @for (filter of filters; track filter) {
-        <mat-option [value]="filter.value">{{filter.viewValue}}</mat-option>
+      <mat-option [value]="filter.value">{{ filter.viewValue }}</mat-option>
       }
     </mat-select>
   </mat-form-field>

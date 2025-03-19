@@ -24,7 +24,7 @@ export const authInterceptor: HttpInterceptorFn = (
       if (error.status === 401 && accessToken) {
         return loginService.refreshAccessToken().pipe(
           switchMap((response) => {
-            console.log('new accesstoken from resfresh:', response.access);
+            // console.log('new accesstoken from resfresh:', response.access);
             localStorage.setItem('access', response.access);
             const retriedRequest = request.clone({
               setHeaders: { Authorization: `Bearer ${response.access}` },

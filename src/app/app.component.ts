@@ -24,7 +24,6 @@ export class AppComponent implements OnInit {
     const refreshToken = localStorage.getItem('refresh');
 
     if (refreshToken && accessToken) {
-      console.log("access")
       this.loginService.loggedIn.next(true);
     } else {
       this.loginService.loggedIn.next(false);

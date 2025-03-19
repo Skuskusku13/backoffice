@@ -19,14 +19,14 @@ interface BusinessState {
   filter: {
     time: 'year' | 'quarter' | 'month' | 'week' | 'day';
     category: 'all' | number;
-    sale: 'all' | boolean;
+    sale: 'all' | string;
   };
 }
 
 const initialState: BusinessState = {
   transactions: [],
   isLoading: false,
-  filter: { time: 'month', category: 'all', sale: 'all' },
+  filter: { time: 'year', category: 'all', sale: 'all' },
 };
 
 export const BusinessStore = signalStore(
@@ -39,7 +39,8 @@ export const BusinessStore = signalStore(
           transaction.type == 'retraitVente' &&
           (filter.category() == 'all' ||
             transaction.category == filter.category()) &&
-          (filter.sale() == 'all' || transaction.onSale == filter.sale()) &&
+          (filter.sale() === 'all' ||
+            transaction.onSale === (filter.sale() === 'true')) &&
           filterByTime(transaction.date, filter.time())
         ) {
           amount += transaction.price;
@@ -49,7 +50,7 @@ export const BusinessStore = signalStore(
     }),
     // revenueBis: computed(() => store.revenue() + 3),
   })),
-  withMethods((store) => ({
+  withMethods((store, booksService = inject(TransactionsService)) => ({
     updateTimeFilter(
       time: 'year' | 'quarter' | 'month' | 'week' | 'day'
     ): void {
@@ -62,13 +63,11 @@ export const BusinessStore = signalStore(
         filter: { ...state.filter, category },
       }));
     },
-    updateSaleFilter(sale: 'all' | boolean): void {
+    updateSaleFilter(sale: 'all' | string): void {
       patchState(store, (state) => ({
         filter: { ...state.filter, sale },
       }));
     },
-  })),
-  withMethods((store, booksService = inject(TransactionsService)) => ({
     load: rxMethod<void>(
       pipe(
         debounceTime(300),
@@ -79,8 +78,8 @@ export const BusinessStore = signalStore(
             tapResponse({
               next: (transactions) => {
                 patchState(store, { transactions, isLoading: false });
-                console.log(store.transactions());
-                console.log(store.revenue());
+                // console.log(store.transactions());
+                // console.log(store.revenue());
               },
               error: (err) => {
                 patchState(store, { isLoading: false });
