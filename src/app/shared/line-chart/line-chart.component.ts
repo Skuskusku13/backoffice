@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { RevenueByPeriod } from '../../core/models/revenue-dto.interface';
+import { AmountByPeriod } from '../../core/models/revenue-dto.interface';
 
 @Component({
   selector: 'app-line-chart',
@@ -12,7 +12,7 @@ import { RevenueByPeriod } from '../../core/models/revenue-dto.interface';
 export class LineChartComponent implements OnInit {
   barChartData!: ChartData<'line'>;
   barChartOptions!: ChartOptions<'line'>;
-  @Input() revenuesByPeriod: RevenueByPeriod[] = [];
+  @Input() revenuesByPeriod: AmountByPeriod[] = [];
 
   ngOnInit(): void {
     console.log(this.revenuesByPeriod);    

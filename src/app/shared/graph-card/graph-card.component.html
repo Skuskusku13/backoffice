@@ -1,16 +1,16 @@
 <mat-card class="example-card" appearance="outlined">
   <mat-card-header>
     <mat-card-title-group style="display: block; text-align: center">
-      @if (titleGraph == 'Impôts') {
-      <mat-card-title>{{ sales | currency : "EUR" }} </mat-card-title>
-      }@else {
+      @if (title == 'Résultats comptables') {
       <mat-card-title
-        [ngStyle]="{ color: sales >= 0 ? '#00b426' : 'var(--mat-sys-error)' }"
-        >{{ sales | currency : "EUR" }}
+        [ngStyle]="{ color: amount >= 0 ? '#00b426' : 'var(--mat-sys-error)' }"
+        >{{ amount | currency : "EUR" }}
       </mat-card-title>
+      }@else {
+      <mat-card-title>{{ amount | currency : "EUR" }} </mat-card-title>
       }
       <mat-card-subtitle>
-        {{ titleGraph }}
+        {{ title }}
       </mat-card-subtitle>
     </mat-card-title-group>
   </mat-card-header>

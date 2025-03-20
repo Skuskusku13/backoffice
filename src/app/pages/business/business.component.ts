@@ -27,25 +27,21 @@ import { LineChartComponent } from '../../shared/line-chart/line-chart.component
   providers: [BusinessStore],
   templateUrl: './business.component.html',
   styleUrl: './business.component.scss',
-  // encapsulation: ViewEncapsulation.None
 })
 export class BusinessComponent implements OnInit {
   readonly store = inject(BusinessStore);
-  metrics: any = [
+  metrics = [
     {
       title: "Chiffre d'affaire",
-      sales: this.store.revenues().totalRevenueActual,
-      valuePercent: 0,
+      amount: this.store.revenues().totalRevenueActual,
     },
     {
       title: 'Résultats comptables',
-      sales: -14,
-      valuePercent: 0,
+      amount: this.store.marge(),
     },
     {
       title: 'Impôts',
-      sales: 6,
-      valuePercent: 0,
+      amount: this.store.impots(),
     },
   ];
 
@@ -60,7 +56,7 @@ export class BusinessComponent implements OnInit {
   categories = [
     { value: '', viewValue: 'Tous', titleForm: 'Catégories' },
     { value: '0', viewValue: 'Poissons' },
-    { value: '1', viewValue: 'Fruits De Mer' },
+    { value: '1', viewValue: 'Fruits de mer' },
     { value: '2', viewValue: 'Crustacés' },
   ];
 
@@ -72,7 +68,9 @@ export class BusinessComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      this.metrics[0].sales = this.store.revenues().totalRevenueActual;
+      this.metrics[0].amount = this.store.revenues().totalRevenueActual;
+      this.metrics[1].amount = this.store.marge();
+      this.metrics[2].amount = this.store.impots();
     });
     effect(() => {
       const filter = this.store.filter();

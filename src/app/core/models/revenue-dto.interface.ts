@@ -1,10 +1,13 @@
 export interface RevenuesDto {
   totalRevenueActual: number;
   totalRevenue: number;
-  revenuesByPeriod: RevenueByPeriod[];
+  revenuesByPeriod: AmountByPeriod[];
+  totalBillsActual: number;
+  totalBills: number;
+  billsByPeriod: AmountByPeriod[];
 }
 
-export interface RevenueByPeriod {
+export interface AmountByPeriod {
   date_group: string;
   total: number;
 }

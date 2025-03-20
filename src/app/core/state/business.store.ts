@@ -29,6 +29,9 @@ const initialState: BusinessState = {
     totalRevenueActual: 0,
     totalRevenue: 0,
     revenuesByPeriod: [],
+    totalBillsActual: 0,
+    totalBills: 0,
+    billsByPeriod: [],
   },
   isLoading: false,
   filter: { time: 'year', category: '', sale: 'all' },
@@ -36,6 +39,20 @@ const initialState: BusinessState = {
 
 export const BusinessStore = signalStore(
   withState(initialState),
+  withComputed(({ revenues }) => ({
+    marge: computed(
+      () => revenues().totalRevenueActual - revenues().totalBillsActual
+    ),
+    impots: computed(() => {
+      if (revenues().totalRevenueActual - revenues().totalBillsActual > 0) {
+        return (
+          (revenues().totalRevenueActual - revenues().totalBillsActual) * 0.3
+        );
+      } else {
+        return 0;
+      }
+    }),
+  })),
   withMethods((store, transactionsService = inject(TransactionsService)) => ({
     updateTimeFilter(
       time: 'year' | 'quarter' | 'month' | 'week' | 'day'
