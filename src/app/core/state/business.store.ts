@@ -36,25 +36,6 @@ const initialState: BusinessState = {
 
 export const BusinessStore = signalStore(
   withState(initialState),
-  // withComputed(({ transactions, filter }) => ({
-  //   revenue: computed(() => {
-  //     let amount = 0;
-  //     for (const transaction of transactions()) {
-  //       if (
-  //         transaction.type == 'retraitVente' &&
-  //         (filter.category() == 'all' ||
-  //           transaction.category == filter.category()) &&
-  //         (filter.sale() === 'all' ||
-  //           transaction.onSale === (filter.sale() === 'true')) &&
-  //         filterByTime(transaction.date, filter.time())
-  //       ) {
-  //         amount += transaction.price;
-  //       }
-  //     }
-  //     return amount;
-  //   }),
-  //   // revenueBis: computed(() => store.revenue() + 3),
-  // })),
   withMethods((store, transactionsService = inject(TransactionsService)) => ({
     updateTimeFilter(
       time: 'year' | 'quarter' | 'month' | 'week' | 'day'

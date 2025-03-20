@@ -35,7 +35,7 @@
       @if (store.isLoading()) {
       <hand-spinner></hand-spinner>
       } @else {
-      <app-line-chart></app-line-chart>
+      <app-line-chart [revenuesByPeriod]="store.revenues.revenuesByPeriod()"></app-line-chart>
       }
     </div></mat-grid-tile
   >
