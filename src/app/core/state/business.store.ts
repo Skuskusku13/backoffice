@@ -5,13 +5,11 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { Transaction } from '../models/transaction.interface';
 import { computed, inject } from '@angular/core';
 import { TransactionsService } from '../services/transactions.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { pipe, debounceTime, tap, switchMap } from 'rxjs';
-import { filterByTime } from '../utils/time-filter.utils';
 import { RevenuesDto } from '../models/revenue-dto.interface';
 
 interface BusinessState {
@@ -42,6 +40,9 @@ export const BusinessStore = signalStore(
   withComputed(({ revenues }) => ({
     marge: computed(
       () => revenues().totalRevenueActual - revenues().totalBillsActual
+    ),
+    previousMarge: computed(
+      () => revenues().revenuesByPeriod[-2]?.total - revenues().billsByPeriod[-2]?.total
     ),
     impots: computed(() => {
       if (revenues().totalRevenueActual - revenues().totalBillsActual > 0) {

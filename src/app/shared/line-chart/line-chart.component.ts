@@ -2,10 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { AmountByPeriod } from '../../core/models/revenue-dto.interface';
+import { DateGroupLabelPipe } from '../../core/pipes/date-group-label.pipe';
 
 @Component({
   selector: 'app-line-chart',
   imports: [BaseChartDirective],
+  providers: [DateGroupLabelPipe],
   templateUrl: './line-chart.component.html',
   styleUrl: './line-chart.component.scss',
 })
@@ -14,10 +16,14 @@ export class LineChartComponent implements OnInit {
   barChartOptions!: ChartOptions<'line'>;
   @Input() revenuesByPeriod: AmountByPeriod[] = [];
 
+  constructor(private dateGroupLabelPipe: DateGroupLabelPipe) {}
+
   ngOnInit(): void {
-    console.log(this.revenuesByPeriod);    
+    console.log(this.revenuesByPeriod);
     this.barChartData = {
-      labels: this.revenuesByPeriod.map((revenue) => revenue.date_group),
+      labels: this.revenuesByPeriod.map((revenue) =>
+        this.dateGroupLabelPipe.transform(revenue.date_group)
+      ),
       datasets: [
         {
           label: "Chiffre d'affaire",

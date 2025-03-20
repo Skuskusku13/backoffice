@@ -34,14 +34,18 @@ export class BusinessComponent implements OnInit {
     {
       title: "Chiffre d'affaire",
       amount: this.store.revenues().totalRevenueActual,
+      havePreviousAmount: false,
     },
     {
       title: 'Résultats comptables',
       amount: this.store.marge(),
+      havePreviousAmount: true,
+      previousAmount: this.store.previousMarge(),
     },
     {
       title: 'Impôts',
       amount: this.store.impots(),
+      havePreviousAmount: false,
     },
   ];
 
@@ -70,6 +74,7 @@ export class BusinessComponent implements OnInit {
     effect(() => {
       this.metrics[0].amount = this.store.revenues().totalRevenueActual;
       this.metrics[1].amount = this.store.marge();
+      this.metrics[1].previousAmount = this.store.previousMarge();
       this.metrics[2].amount = this.store.impots();
     });
     effect(() => {

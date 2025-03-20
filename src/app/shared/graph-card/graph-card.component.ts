@@ -26,4 +26,6 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 export class GraphCardComponent {
   @Input() title = '';
   @Input() amount = 0;
+  @Input() havePreviousAmount = false;
+  @Input() previousAmount?: number;
 }
