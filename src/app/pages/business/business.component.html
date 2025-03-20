@@ -24,8 +24,8 @@
     ><div id="metrics-tile">
       @if (store.isLoading()) {
       <hand-spinner></hand-spinner>
-      } @else { @for (filter of filters; track $index) {
-      <app-graph-card [titleGraph]="filter.title" [sales]="filter.sales">
+      } @else { @for (metric of metrics; track $index) {
+      <app-graph-card [titleGraph]="metric.title" [sales]="metric.sales">
       </app-graph-card>
       }}
     </div>

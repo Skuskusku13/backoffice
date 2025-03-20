@@ -5,15 +5,10 @@ import {
   MatGridTile,
 } from '@angular/material/grid-list';
 import { FilterComponent } from '../../shared/filter/filter.component';
-import {
-  Component,
-  effect,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { BusinessStore } from '../../core/state/business.store';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
-import { LineChartComponent } from "../../shared/line-chart/line-chart.component";
+import { LineChartComponent } from '../../shared/line-chart/line-chart.component';
 
 /**
  * @title Business page component
@@ -27,8 +22,8 @@ import { LineChartComponent } from "../../shared/line-chart/line-chart.component
     MatGridTile,
     MatGridListModule,
     FilterComponent,
-    LineChartComponent
-],
+    LineChartComponent,
+  ],
   providers: [BusinessStore],
   templateUrl: './business.component.html',
   styleUrl: './business.component.scss',
@@ -36,10 +31,10 @@ import { LineChartComponent } from "../../shared/line-chart/line-chart.component
 })
 export class BusinessComponent implements OnInit {
   readonly store = inject(BusinessStore);
-  filters: any = [
+  metrics: any = [
     {
       title: "Chiffre d'affaire",
-      sales: this.store.revenue(),
+      sales: this.store.revenues().totalRevenueActual,
       valuePercent: 0,
     },
     {
@@ -63,7 +58,7 @@ export class BusinessComponent implements OnInit {
   ];
 
   categories = [
-    { value: 'all', viewValue: 'Tous', titleForm: 'Catégories' },
+    { value: '', viewValue: 'Tous', titleForm: 'Catégories' },
     { value: '0', viewValue: 'Poissons' },
     { value: '1', viewValue: 'Fruits De Mer' },
     { value: '2', viewValue: 'Crustacés' },
@@ -77,11 +72,15 @@ export class BusinessComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      this.filters[0].sales = this.store.revenue();
+      this.metrics[0].sales = this.store.revenues().totalRevenueActual;
+    });
+    effect(() => {
+      const filter = this.store.filter();
+      this.store.loadRevenues();
     });
   }
 
   ngOnInit(): void {
-    this.store.load();
+    this.store.loadRevenues();
   }
 }
