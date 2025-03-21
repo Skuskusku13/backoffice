@@ -15,6 +15,7 @@ export class LineChartComponent implements OnInit {
   barChartData!: ChartData<'line'>;
   barChartOptions!: ChartOptions<'line'>;
   @Input() revenuesByPeriod: AmountByPeriod[] = [];
+  @Input() billsByPeriod: AmountByPeriod[] = [];
 
   constructor(private dateGroupLabelPipe: DateGroupLabelPipe) {}
 
@@ -28,8 +29,17 @@ export class LineChartComponent implements OnInit {
         {
           label: "Chiffre d'affaire",
           data: this.revenuesByPeriod.map((revenue) => revenue.total),
-          borderColor: '#3e8bff',
-          backgroundColor: 'rgba(0, 0, 255, 0.3)',
+          borderColor: 'rgba(62, 139, 255, 1)',
+          backgroundColor: 'rgba(62, 139, 255, 0.15)',
+          fill: true,
+          tension: 0,
+        },
+        {
+          label: "Factures",
+          data: this.billsByPeriod.map((bill) => bill.total),
+          borderColor: 'rgba(255, 154, 62, 1)',
+          backgroundColor: 'rgba(255, 154, 62, 0.15)',
+          fill: true,
           tension: 0,
         },
       ],
@@ -38,7 +48,8 @@ export class LineChartComponent implements OnInit {
       responsive: true,
       plugins: {
         legend: {
-          display: false,
+          display: true,
+          position: 'bottom',
         },
         tooltip: {
           enabled: true,
@@ -57,7 +68,7 @@ export class LineChartComponent implements OnInit {
           },
           title: {
             display: true,
-            text: "Chiffre d'affaires (€)",
+            text: "montant (€)",
             color: '#555',
           },
         },

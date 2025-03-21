@@ -41,9 +41,18 @@ export const BusinessStore = signalStore(
     marge: computed(
       () => revenues().totalRevenueActual - revenues().totalBillsActual
     ),
-    previousMarge: computed(
-      () => revenues().revenuesByPeriod[-2]?.total - revenues().billsByPeriod[-2]?.total
-    ),
+    previousMarge: computed(() => {
+      const revLength = revenues().revenuesByPeriod.length;
+      const billsLength = revenues().billsByPeriod.length;
+      if(revLength != 0 && billsLength != 0) { 
+        return (
+          revenues().revenuesByPeriod[revLength-2].total -
+          revenues().billsByPeriod[billsLength-2].total
+        );
+      } else {
+        return 0;
+      }
+    }),
     impots: computed(() => {
       if (revenues().totalRevenueActual - revenues().totalBillsActual > 0) {
         return (
