@@ -1,36 +1,35 @@
-export function filterByTime(date: Date, filter: string): boolean {
+export function getActualDateGroup(filter: string): string {
   const today = new Date();
   switch (filter) {
     case 'year': {
-      return date.getFullYear() === today.getFullYear();
+      return today.getFullYear().toString();
     }
     case 'quarter': {
-      const currentQuarter = Math.floor(today.getMonth() / 3);
-      const transactionQuarter = Math.floor(date.getMonth() / 3);
-      return (
-        date.getFullYear() === today.getFullYear() &&
-        transactionQuarter === currentQuarter
-      );
+      const currentQuarter = Math.floor(today.getMonth() / 3) + 1;
+      return `le trimestre ${currentQuarter} de ${today.getFullYear()}`;
     }
     case 'month': {
-      return (
-        date.getFullYear() === today.getFullYear() &&
-        date.getMonth() === today.getMonth()
-      );
+      const month = today.toLocaleString('default', { month: 'long' });
+      return `${month} ${today.getFullYear()}`;
     }
     case 'week': {
-      const diff = today.getTime() - date.getTime();
-      return diff < 7 * 24 * 60 * 60 * 1000;
+      const startOfYear = new Date(today.getFullYear(), 0, 1);
+      const daysSinceStartOfYear = Math.floor(
+        (today.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000)
+      );
+      const currentWeek = Math.ceil((daysSinceStartOfYear + startOfYear.getDay() + 1) / 7);
+      return `la semaine ${currentWeek} de ${today.getFullYear()}`;
     }
     case 'day': {
-      return (
-        date.getFullYear() === today.getFullYear() &&
-        date.getMonth() === today.getMonth() &&
-        date.getDate() === today.getDate()
-      );
+      return 'le ' + today.toLocaleDateString('fr-FR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
     }
     default: {
-      return false;
+      return '';
     }
   }
 }

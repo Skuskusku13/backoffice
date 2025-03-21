@@ -24,7 +24,9 @@
     ><div id="metrics-tile">
       @if (store.isLoading()) {
       <hand-spinner></hand-spinner>
-      } @else { @for (metric of metrics; track $index) {
+      } @else {
+      <h3>Métriques pour {{ actualDateGroup }}</h3>
+      @for (metric of metrics; track $index) {
       <app-graph-card
         [title]="metric.title"
         [amount]="metric.amount"

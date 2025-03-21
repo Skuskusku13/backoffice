@@ -9,6 +9,7 @@ import { Component, effect, inject, OnInit } from '@angular/core';
 import { BusinessStore } from '../../core/state/business.store';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 import { LineChartComponent } from '../../shared/line-chart/line-chart.component';
+import { getActualDateGroup } from '../../core/utils/time-filter.utils';
 
 /**
  * @title Business page component
@@ -30,6 +31,7 @@ import { LineChartComponent } from '../../shared/line-chart/line-chart.component
 })
 export class BusinessComponent implements OnInit {
   readonly store = inject(BusinessStore);
+  actualDateGroup = getActualDateGroup(this.store.filter().time);
   metrics = [
     {
       title: "Chiffre d'affaire",
@@ -80,6 +82,7 @@ export class BusinessComponent implements OnInit {
     effect(() => {
       const filter = this.store.filter();
       this.store.loadRevenues();
+      this.actualDateGroup = getActualDateGroup(this.store.filter().time);
     });
   }
 
