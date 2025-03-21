@@ -1,9 +1,18 @@
 <mat-card class="example-card" appearance="outlined">
   <mat-card-header>
     <mat-card-title-group style="display: block; text-align: center">
-      <mat-card-title [ngStyle]="{'color': (sales >= 0) ? '#00b426' : 'var(--mat-sys-error)'}">{{ sales | currency : "EUR" }} </mat-card-title>
+      @if (title == 'Résultats comptables') {
+      <mat-card-title
+        [ngStyle]="{ color: amount >= 0 ? '#00b426' : 'var(--mat-sys-error)' }"
+        >{{ amount | currency : "EUR" }}
+      </mat-card-title>
+      }@else {
+      <mat-card-title>{{ amount | currency : "EUR" }} </mat-card-title>
+      } @if (havePreviousAmount) {
+      <mat-card-subtitle>{{ previousAmount }}</mat-card-subtitle>
+      }
       <mat-card-subtitle>
-        {{ titleGraph }}
+        {{ title }}
       </mat-card-subtitle>
     </mat-card-title-group>
   </mat-card-header>

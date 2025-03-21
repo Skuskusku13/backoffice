@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { API_URL } from '../utils/constants.utils';
 import { Transaction } from '../models/transaction.interface';
+import { RevenuesDto } from '../models/revenue-dto.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -27,5 +28,16 @@ export class TransactionsService {
           }))
         )
       );
+  }
+
+  getRevenuesByFilters(
+    time: string,
+    category: string,
+    type: string
+  ): Observable<RevenuesDto> {
+    return this.http.get<RevenuesDto>(
+      API_URL +
+        `transactions/CA/?type=${type}&category=${category}&period=${time}`
+    );
   }
 }

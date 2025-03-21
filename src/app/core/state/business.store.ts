@@ -5,52 +5,56 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { Transaction } from '../models/transaction.interface';
 import { computed, inject } from '@angular/core';
 import { TransactionsService } from '../services/transactions.service';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { pipe, debounceTime, tap, switchMap } from 'rxjs';
-import { filterByTime } from '../utils/time-filter.utils';
+import { RevenuesDto } from '../models/revenue-dto.interface';
 
 interface BusinessState {
-  transactions: Transaction[];
+  revenues: RevenuesDto;
   isLoading: boolean;
   filter: {
     time: 'year' | 'quarter' | 'month' | 'week' | 'day';
-    category: 'all' | number;
-    sale: 'all' | string;
+    category: string;
+    sale: 'all' | 'true' | 'false';
   };
 }
 
 const initialState: BusinessState = {
-  transactions: [],
+  revenues: {
+    totalRevenueActual: 0,
+    totalRevenue: 0,
+    revenuesByPeriod: [],
+    totalBillsActual: 0,
+    totalBills: 0,
+    billsByPeriod: [],
+  },
   isLoading: false,
-  filter: { time: 'year', category: 'all', sale: 'all' },
+  filter: { time: 'year', category: '', sale: 'all' },
 };
 
 export const BusinessStore = signalStore(
   withState(initialState),
-  withComputed(({ transactions, filter }) => ({
-    revenue: computed(() => {
-      let amount = 0;
-      for (const transaction of transactions()) {
-        if (
-          transaction.type == 'retraitVente' &&
-          (filter.category() == 'all' ||
-            transaction.category == filter.category()) &&
-          (filter.sale() === 'all' ||
-            transaction.onSale === (filter.sale() === 'true')) &&
-          filterByTime(transaction.date, filter.time())
-        ) {
-          amount += transaction.price;
-        }
+  withComputed(({ revenues }) => ({
+    marge: computed(
+      () => revenues().totalRevenueActual - revenues().totalBillsActual
+    ),
+    previousMarge: computed(
+      () => revenues().revenuesByPeriod[-2]?.total - revenues().billsByPeriod[-2]?.total
+    ),
+    impots: computed(() => {
+      if (revenues().totalRevenueActual - revenues().totalBillsActual > 0) {
+        return (
+          (revenues().totalRevenueActual - revenues().totalBillsActual) * 0.3
+        );
+      } else {
+        return 0;
       }
-      return amount;
     }),
-    // revenueBis: computed(() => store.revenue() + 3),
   })),
-  withMethods((store, booksService = inject(TransactionsService)) => ({
+  withMethods((store, transactionsService = inject(TransactionsService)) => ({
     updateTimeFilter(
       time: 'year' | 'quarter' | 'month' | 'week' | 'day'
     ): void {
@@ -58,35 +62,38 @@ export const BusinessStore = signalStore(
         filter: { ...state.filter, time },
       }));
     },
-    updateCategoryFilter(category: number): void {
+    updateCategoryFilter(category: string): void {
       patchState(store, (state) => ({
         filter: { ...state.filter, category },
       }));
     },
-    updateSaleFilter(sale: 'all' | string): void {
+    updateSaleFilter(sale: 'all' | 'true' | 'false'): void {
       patchState(store, (state) => ({
         filter: { ...state.filter, sale },
       }));
     },
-    load: rxMethod<void>(
+    loadRevenues: rxMethod<void>(
       pipe(
         debounceTime(300),
-        // distinctUntilChanged(),
         tap(() => patchState(store, { isLoading: true })),
         switchMap(() => {
-          return booksService.getTransactions().pipe(
-            tapResponse({
-              next: (transactions) => {
-                patchState(store, { transactions, isLoading: false });
-                // console.log(store.transactions());
-                // console.log(store.revenue());
-              },
-              error: (err) => {
-                patchState(store, { isLoading: false });
-                console.error(err);
-              },
-            })
-          );
+          return transactionsService
+            .getRevenuesByFilters(
+              store.filter().time,
+              store.filter().category,
+              store.filter().sale
+            )
+            .pipe(
+              tapResponse({
+                next: (revenues) => {
+                  patchState(store, { revenues, isLoading: false });
+                },
+                error: (err) => {
+                  patchState(store, { isLoading: false });
+                  console.error(err);
+                },
+              })
+            );
         })
       )
     ),

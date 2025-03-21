@@ -3,9 +3,6 @@
 <mat-grid-list cols="4" rowHeight="fit" style="height: 70vh" gutterSize="15px">
   <mat-grid-tile [colspan]="3" [rowspan]="2">
     <div id="filters-tile">
-      @if (store.isLoading()) {
-      <hand-spinner></hand-spinner>
-      } @else {
       <app-filter
         [titleForm]="'Période'"
         [filters]="periodes"
@@ -20,16 +17,22 @@
         [titleForm]="'Types de ventes'"
         [filters]="typesVentes"
         (filterUpdate)="store.updateSaleFilter($event)"
-      ></app-filter
-      >}
+      ></app-filter>
     </div>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="1" [rowspan]="12"
     ><div id="metrics-tile">
       @if (store.isLoading()) {
       <hand-spinner></hand-spinner>
-      } @else { @for (filter of filters; track $index) {
-      <app-graph-card [titleGraph]="filter.title" [sales]="filter.sales">
+      } @else {
+      <h3>Métriques pour {{ actualDateGroup }}</h3>
+      @for (metric of metrics; track $index) {
+      <app-graph-card
+        [title]="metric.title"
+        [amount]="metric.amount"
+        [havePreviousAmount]="metric.havePreviousAmount"
+        [previousAmount]="metric?.previousAmount"
+      >
       </app-graph-card>
       }}
     </div>
@@ -39,7 +42,9 @@
       @if (store.isLoading()) {
       <hand-spinner></hand-spinner>
       } @else {
-      <app-line-chart></app-line-chart>
+      <app-line-chart
+        [revenuesByPeriod]="store.revenues.revenuesByPeriod()"
+      ></app-line-chart>
       }
     </div></mat-grid-tile
   >

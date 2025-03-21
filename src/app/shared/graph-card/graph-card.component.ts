@@ -24,6 +24,8 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
   styleUrl: './graph-card.component.scss',
 })
 export class GraphCardComponent {
-  @Input() titleGraph = '';
-  @Input() sales = 0;
+  @Input() title = '';
+  @Input() amount = 0;
+  @Input() havePreviousAmount = false;
+  @Input() previousAmount?: number;
 }

@@ -5,15 +5,11 @@ import {
   MatGridTile,
 } from '@angular/material/grid-list';
 import { FilterComponent } from '../../shared/filter/filter.component';
-import {
-  Component,
-  effect,
-  inject,
-  OnInit,
-} from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { BusinessStore } from '../../core/state/business.store';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
-import { LineChartComponent } from "../../shared/line-chart/line-chart.component";
+import { LineChartComponent } from '../../shared/line-chart/line-chart.component';
+import { getActualDateGroup } from '../../core/utils/time-filter.utils';
 
 /**
  * @title Business page component
@@ -27,30 +23,31 @@ import { LineChartComponent } from "../../shared/line-chart/line-chart.component
     MatGridTile,
     MatGridListModule,
     FilterComponent,
-    LineChartComponent
-],
+    LineChartComponent,
+  ],
   providers: [BusinessStore],
   templateUrl: './business.component.html',
   styleUrl: './business.component.scss',
-  // encapsulation: ViewEncapsulation.None
 })
 export class BusinessComponent implements OnInit {
   readonly store = inject(BusinessStore);
-  filters: any = [
+  actualDateGroup = getActualDateGroup(this.store.filter().time);
+  metrics = [
     {
       title: "Chiffre d'affaire",
-      sales: this.store.revenue(),
-      valuePercent: 0,
+      amount: this.store.revenues().totalRevenueActual,
+      havePreviousAmount: false,
     },
     {
       title: 'Résultats comptables',
-      sales: -14,
-      valuePercent: 0,
+      amount: this.store.marge(),
+      havePreviousAmount: true,
+      previousAmount: this.store.previousMarge(),
     },
     {
       title: 'Impôts',
-      sales: 6,
-      valuePercent: 0,
+      amount: this.store.impots(),
+      havePreviousAmount: false,
     },
   ];
 
@@ -63,9 +60,9 @@ export class BusinessComponent implements OnInit {
   ];
 
   categories = [
-    { value: 'all', viewValue: 'Tous', titleForm: 'Catégories' },
+    { value: '', viewValue: 'Tous', titleForm: 'Catégories' },
     { value: '0', viewValue: 'Poissons' },
-    { value: '1', viewValue: 'Fruits De Mer' },
+    { value: '1', viewValue: 'Fruits de mer' },
     { value: '2', viewValue: 'Crustacés' },
   ];
 
@@ -77,11 +74,19 @@ export class BusinessComponent implements OnInit {
 
   constructor() {
     effect(() => {
-      this.filters[0].sales = this.store.revenue();
+      this.metrics[0].amount = this.store.revenues().totalRevenueActual;
+      this.metrics[1].amount = this.store.marge();
+      this.metrics[1].previousAmount = this.store.previousMarge();
+      this.metrics[2].amount = this.store.impots();
+    });
+    effect(() => {
+      const filter = this.store.filter();
+      this.store.loadRevenues();
+      this.actualDateGroup = getActualDateGroup(this.store.filter().time);
     });
   }
 
   ngOnInit(): void {
-    this.store.load();
+    this.store.loadRevenues();
   }
 }
