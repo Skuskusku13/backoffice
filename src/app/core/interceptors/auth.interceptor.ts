@@ -7,6 +7,7 @@ import {
 import { LoginService } from '../services/login.service';
 import { inject } from '@angular/core';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import {Router} from '@angular/router';
 
 export const authInterceptor: HttpInterceptorFn = (
   request: HttpRequest<unknown>,
@@ -14,6 +15,12 @@ export const authInterceptor: HttpInterceptorFn = (
 ): Observable<HttpEvent<unknown>> => {
   const loginService = inject(LoginService);
   const accessToken = localStorage.getItem('access');
+  const router: Router = inject(Router)
+
+  // 🚨 Empêcher l'interception des requêtes de refresh pour éviter la boucle infinie
+  if (request.url.includes('/api/token/refresh/')) {
+    return next(request);
+  }
 
   const clonedRequest = accessToken
     ? request.clone({ setHeaders: { Authorization: `Bearer ${accessToken}` } })
@@ -24,15 +31,21 @@ export const authInterceptor: HttpInterceptorFn = (
       if (error.status === 401 && accessToken) {
         return loginService.refreshAccessToken().pipe(
           switchMap((response) => {
-            // console.log('new accesstoken from resfresh:', response.access);
-            localStorage.setItem('access', response.access);
-            const retriedRequest = request.clone({
-              setHeaders: { Authorization: `Bearer ${response.access}` },
-            });
-            return next(retriedRequest);
+            if (response && response.access) {
+              localStorage.setItem('access', response.access);
+              const retriedRequest = request.clone({
+                setHeaders: { Authorization: `Bearer ${response.access}` },
+              });
+              return next(retriedRequest);
+            } else {
+              loginService.logout();
+              return throwError(() => new Error('Invalid refresh token response'));
+            }
           }),
           catchError((refreshError) => {
             console.error('Error refreshing access token:', refreshError);
+            loginService.logout()
+            router.navigate(['login'])
             return throwError(() => refreshError);
           })
         );
